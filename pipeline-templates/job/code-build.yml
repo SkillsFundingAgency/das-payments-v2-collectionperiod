@@ -38,7 +38,7 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: src/SFA.DAS.Payments.CollectionPeriod.Function/SFA.DAS.Payments.CollectionPeriod.Function.csproj
+      projects: src/SFA.DAS.Payments.CollectionPeriod.Function/SFA.DAS.Payments.CollectionPeriod.Function/SFA.DAS.Payments.CollectionPeriod.Function.csproj
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)\CollectionPeriod-FunctionApp'
       modifyOutputPath: false
 
