@@ -29,8 +29,8 @@ jobs:
             resourceGroupName: ''
             appSettings: |
               [
-                { "name": "PaymentsConnectionString", "value": "$(PaymentsConnectionString)" },
-                { "name": "ServiceBusConnectionString", "value": "$(ServiceBusConnectionString)" },
+                { "name": "PaymentsConnectionString", "value": "$(DasPaymentsConnectionStringRW)" },
+                { "name": "ServiceBusConnectionString", "value": "$(ServiceBusSAPServFabPrimaryConnectionStringDAS)" },
                 { "name": "SLDJobManagementAPIEndpoint", "value": "$(SLDJobManagementAPIEndpoint)" }
                
               ]
