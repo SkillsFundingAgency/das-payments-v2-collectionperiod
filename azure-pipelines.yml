@@ -29,8 +29,12 @@ stages:
   variables:
   - name: tagEnvironment
     value: Dev/Test
-  - group: DCOL-DST - Environment Key Vault Secrets
-  - group: DCOL-CollectionPeriod-FunctionApp
+  - group: DCOL-DAS - Environment Key Vault Secrets
+  - group:  Common - ServiceBus Connection String
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
 
   jobs:
   - template: pipeline-templates/job/deploy.yml
