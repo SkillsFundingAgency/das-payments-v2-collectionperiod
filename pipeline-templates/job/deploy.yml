@@ -31,7 +31,7 @@ jobs:
               [
                 { "name": "PaymentsDBConnectionString", "value": "$(PaymentsDBConnectionString)" },
                 { "name": "ServiceBusConnectionString", "value": "$(ServiceBusConnectionString)" },
-                { "name": "SLDJobManagementAPIEndpoint", "value": "$(SLDJobManagementAPIEndpoint)" },
+                { "name": "SLDJobManagementAPIEndpoint", "value": "$(SLDJobManagementAPIEndpoint)" }
                
               ]
 
