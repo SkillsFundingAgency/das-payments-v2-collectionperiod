@@ -29,7 +29,7 @@ jobs:
             resourceGroupName: ''
             appSettings: |
               [
-                { "name": "PaymentsDBConnectionString", "value": "$(PaymentsDBConnectionString)" },
+                { "name": "PaymentsConnectionString", "value": "$(PaymentsConnectionString)" },
                 { "name": "ServiceBusConnectionString", "value": "$(ServiceBusConnectionString)" },
                 { "name": "SLDJobManagementAPIEndpoint", "value": "$(SLDJobManagementAPIEndpoint)" }
                
