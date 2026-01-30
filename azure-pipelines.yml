@@ -48,6 +48,10 @@ stages:
     value: Dev/Test
   - group: DCOL-DAS - Environment Key Vault Secrets
   - group: DCOL-CollectionPeriod-FunctionApp
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
  
   jobs:
   - template: pipeline-templates/job/deploy.yml
