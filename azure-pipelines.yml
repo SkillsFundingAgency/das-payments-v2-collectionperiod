@@ -72,6 +72,11 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-SIT - Environment Key Vault Secrets
+  - group:  Common - ServiceBus Connection String
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
   
   jobs:
   - template: pipeline-templates/job/deploy.yml
@@ -79,7 +84,7 @@ stages:
       pool: DCT Build Pool
       environmentName: SIT
       azureSubscription: DCT-VSO
-      appName: DCOL-SIT-ProviderPaymentsRepublishService
+      appName: DCOL-SIT-CollectionPeriod-WEU
 
 - stage: Deploy_ETE
   dependsOn: Deploy_SIT
@@ -88,6 +93,11 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-ETE - Environment Key Vault Secrets
+  - group:  Common - ServiceBus Connection String
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
  
   jobs:
   - template: pipeline-templates/job/deploy.yml
@@ -95,7 +105,7 @@ stages:
       pool: DCT Build Pool
       environmentName: ETE
       azureSubscription: DCT-VSO
-      appName: DCOL-ETE-ProviderPaymentsRepublishService
+      appName: DCOL-ETE-CollectionPeriod-WEU
 
 - stage: Deploy_MO
   dependsOn: Deploy_ETE
@@ -104,6 +114,11 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-MO - Environment Key Vault Secrets
+  - group:  Common - ServiceBus Connection String
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
   
   jobs:
   - template: pipeline-templates/job/deploy.yml
@@ -111,7 +126,7 @@ stages:
       pool: DCT Build Pool
       environmentName: MO
       azureSubscription: DCOL-MO-VSTS
-      appName: DCOL-MO-ProviderPaymentsRepublishService
+      appName: DCOL-MO-CollectionPeriod-WEU
 
 - stage: Deploy_PD
   dependsOn: Deploy_MO
@@ -120,6 +135,11 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-PD - Environment Key Vault Secrets
+  - group:  Common - ServiceBus Connection String
+  - group : Common - Connection String
+  - group : Common - Database Names
+  - group : Common - Database Usernames
+  - group : Common - Project Level
   
   jobs:
   - template: pipeline-templates/job/deploy.yml
@@ -127,7 +147,7 @@ stages:
       pool: DCT Build Pool
       environmentName: PD
       azureSubscription: DCOLPDVSTS
-      appName: DCOL-PD-ProviderPaymentsRepublishService
+      appName: DCOL-PD-CollectionPeriod-WEU
 
 
 
