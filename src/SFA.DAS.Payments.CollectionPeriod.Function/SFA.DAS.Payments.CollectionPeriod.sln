@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.Function", "SFA.DAS.Payments.CollectionPeriod.Function\SFA.DAS.Payments.CollectionPeriod.Function.csproj", "{30D352F2-AFE6-48C7-BE44-89615EFACF14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.Application", "SFA.DAS.Payments.CollectionPeriod.Application\SFA.DAS.Payments.CollectionPeriod.Application.csproj", "{2C896834-BCA5-4F13-9BF5-90BE10F56264}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
