@@ -29,7 +29,7 @@ stages:
   variables:
   - name: tagEnvironment
     value: Dev/Test
-  - group: DCOL-DAS - Environment Key Vault Secrets
+  - group: DCOL-DST - Environment Key Vault Secrets
   - group:  Common - ServiceBus Connection String
   - group : Common - Connection String
   - group : Common - Database Names
