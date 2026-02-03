@@ -12,6 +12,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
     public interface ICollectionPeriodRepository
     {
         Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear);
+        void UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
     }
 
     public class CollectionPeriodRepository : ICollectionPeriodRepository
@@ -26,6 +27,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
         {
             return await _paymentsDataContext.CollectionPeriod.Where(cp => cp.AcademicYear == academicYear)
                 .ToListAsync();
+        }
+
+        public void UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods)
+        {
+            //TODO : Implement the update logic here
+            throw new NotImplementedException();
         }
     }
 }
