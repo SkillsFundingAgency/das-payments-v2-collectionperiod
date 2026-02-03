@@ -17,6 +17,7 @@ builder.Services
  .AddApplicationInsightsTelemetryWorkerService()
  .ConfigureFunctionsApplicationInsights();
 
+
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
