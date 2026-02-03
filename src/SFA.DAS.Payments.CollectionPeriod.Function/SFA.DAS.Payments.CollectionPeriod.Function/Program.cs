@@ -16,11 +16,11 @@ builder.Services
  .AddApplicationInsightsTelemetryWorkerService()
  .ConfigureFunctionsApplicationInsights();
 
+
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("PaymentsConnectionString");
-    options.UseSqlServer(connectionString);
-}); 
+    options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
+});
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();
