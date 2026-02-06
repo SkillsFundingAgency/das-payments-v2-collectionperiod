@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.0" />
+    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-3" />
   </ItemGroup>
 
 </Project>
