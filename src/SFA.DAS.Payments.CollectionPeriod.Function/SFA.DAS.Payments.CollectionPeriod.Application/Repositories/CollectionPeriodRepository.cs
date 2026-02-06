@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.Application.Repositories;
 using SFA.DAS.Payments.Model.Core.Entities;
+using SFA.DAS.Payments.PeriodEnd.Messages.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
     {
         Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear);
         Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
+        Task UpdateCollectionPeriodOnPeriodEndStopped(short academicYear, byte period);
     }
 
     public class CollectionPeriodRepository : ICollectionPeriodRepository
@@ -65,6 +67,28 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             catch (Exception ex)
             {
                 _logger.LogError("SQL Error - CollectionPeriodRepository for UpdateCollectionPeriods. Message {message}", ex.Message);
+                throw;
+            }
+        }
+
+
+        public Task UpdateCollectionPeriodOnPeriodEndStopped(short academicYear, byte period)
+        {
+            try
+            {
+                var collectionPeriod = _paymentsDataContext.CollectionPeriod.FirstOrDefault(cp => cp.AcademicYear == academicYear && cp.Period == period);
+
+                if (collectionPeriod != null)
+                {
+                    collectionPeriod.IsOpen = false;
+                    _paymentsDataContext.CollectionPeriod.Update(collectionPeriod);
+                }
+
+                return _paymentsDataContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for UpdateCollectionPeriodOnPeriodEndStopped for academicYear: {academicYear}, period: {period}, exception message {message}", academicYear, period, ex.Message);
                 throw;
             }
         }

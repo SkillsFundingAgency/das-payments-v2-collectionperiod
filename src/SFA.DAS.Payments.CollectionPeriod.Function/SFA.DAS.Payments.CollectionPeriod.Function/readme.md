@@ -9,10 +9,11 @@ Add the following at the root of the function app ina file labelled `local.setti
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "PaymentsConnectionString": "",
-    "SLDJobManagementAPIEndpoint": ""
+    "SLDJobManagementAPIEndpoint": "",
+    "ServiceBusConnectionString": ""
   },
   "ApplicationInsights": {
     "ConnectionString": "InstrumentationKey="
-  },
+  }
 }
 ```

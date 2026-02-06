@@ -2,6 +2,7 @@
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.Model.Core.Entities;
+using SFA.DAS.Payments.PeriodEnd.Messages.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
     public interface IUpdatePaymentsCollectionPeriodService
     {
         public void UpdatePaymentsCollectionPeriod(List<SLDJobManagementAPICollectionPeriod> collectionPeriods);
+        public void UpdatePaymentsCollectionPeriod(PeriodEndStoppedEvent periodEndStoppedEvent);
     }
 
     public class UpdatePaymentsCollectionPeriodService : IUpdatePaymentsCollectionPeriodService
@@ -31,6 +33,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             var mappedCollectionPeriods = _collectionPeriodMapper.MapCollectionPeriods(collectionPeriods);
 
             _collectionPeriodRepository.UpdateCollectionPeriods(mappedCollectionPeriods);
+        }
+
+        public void UpdatePaymentsCollectionPeriod(PeriodEndStoppedEvent periodEndStoppedEvent)
+        {
+            _collectionPeriodRepository.UpdateCollectionPeriodOnPeriodEndStopped(periodEndStoppedEvent.CollectionPeriod.AcademicYear, periodEndStoppedEvent.CollectionPeriod.Period);
         }
     }
 }
