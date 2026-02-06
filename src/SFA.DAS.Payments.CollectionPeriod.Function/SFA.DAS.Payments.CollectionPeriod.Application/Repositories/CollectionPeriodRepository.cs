@@ -14,7 +14,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
     public interface ICollectionPeriodRepository
     {
         Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear);
-        void UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
+        Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
     }
 
     public class CollectionPeriodRepository : ICollectionPeriodRepository
@@ -35,17 +35,38 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                 return await _paymentsDataContext.CollectionPeriod.Where(cp => cp.AcademicYear == academicYear)
                 .ToListAsync();
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 _logger.LogError("SQL Error - CollectionPeriodRepository for GetCollectionPeriodByAcademicYear. Message {message}", ex.Message);
                 throw;
             }
-            
         }
 
-        public void UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods)
+        public async Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods)
         {
-            //TODO : Implement the update logic here
-            throw new NotImplementedException();
+            try
+            {
+                foreach (var collectionPeriod in collectionPeriods)
+                {
+                    var existingCollectionPeriod = _paymentsDataContext.CollectionPeriod
+                        .FirstOrDefault(cp => cp.AcademicYear == collectionPeriod.AcademicYear && cp.Period == collectionPeriod.Period);
+                    if (existingCollectionPeriod != null)
+                    {
+                        existingCollectionPeriod.IsOpen = collectionPeriod.IsOpen;
+                        _paymentsDataContext.CollectionPeriod.Update(existingCollectionPeriod);
+                    }
+                    else
+                    {
+                        _paymentsDataContext.CollectionPeriod.Add(collectionPeriod);
+                    }
+                }
+                await _paymentsDataContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for UpdateCollectionPeriods. Message {message}", ex.Message);
+                throw;
+            }
         }
     }
 }

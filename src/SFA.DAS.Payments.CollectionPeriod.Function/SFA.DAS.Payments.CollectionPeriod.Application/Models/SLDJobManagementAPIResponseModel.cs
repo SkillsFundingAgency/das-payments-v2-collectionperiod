@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Models
 {
-    public class SLDJobManagementAPIResponseModel
-    {
-        public SLDJobManagementAPICollectionPeriods[] CollectionPeriods { get; set; }        
-    }
-
-    public class SLDJobManagementAPICollectionPeriods
+    public class SLDJobManagementAPICollectionPeriod
     {
         public byte PeriodNumber { get; set; }
         public short CollectionYear { get; set; }

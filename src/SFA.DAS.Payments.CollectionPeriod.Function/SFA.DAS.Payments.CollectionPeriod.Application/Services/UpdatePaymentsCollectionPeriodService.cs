@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Payments.CollectionPeriod.Application.Models;
+﻿using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
+using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.Model.Core.Entities;
 using System;
@@ -11,22 +12,25 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
     public interface IUpdatePaymentsCollectionPeriodService
     {
-        public void UpdatePaymentsCollectionPeriod (SLDJobManagementAPICollectionPeriods collectionPeriods);
+        public void UpdatePaymentsCollectionPeriod(List<SLDJobManagementAPICollectionPeriod> collectionPeriods);
     }
 
     public class UpdatePaymentsCollectionPeriodService : IUpdatePaymentsCollectionPeriodService
     {
         public readonly ICollectionPeriodRepository _collectionPeriodRepository;
+        public readonly ICollectionPeriodMapper _collectionPeriodMapper;
 
-        public UpdatePaymentsCollectionPeriodService(ICollectionPeriodRepository collectionPeriodRepository)
+        public UpdatePaymentsCollectionPeriodService(ICollectionPeriodRepository collectionPeriodRepository, ICollectionPeriodMapper collectionPeriodMapper)
         {
             _collectionPeriodRepository = collectionPeriodRepository;
+            _collectionPeriodMapper = collectionPeriodMapper;
         }
 
-        public void UpdatePaymentsCollectionPeriod(SLDJobManagementAPICollectionPeriods collectionPeriods)
+        public void UpdatePaymentsCollectionPeriod(List<SLDJobManagementAPICollectionPeriod> collectionPeriods)
         {
-            //TODO : Map the SLDJobManagementAPICollectionPeriods to the Payments CollectionPeriod model
-            //TODO : call the collection period repository to update the collection periods in the database
+            var mappedCollectionPeriods = _collectionPeriodMapper.MapCollectionPeriods(collectionPeriods);
+
+            _collectionPeriodRepository.UpdateCollectionPeriods(mappedCollectionPeriods);
         }
     }
 }
