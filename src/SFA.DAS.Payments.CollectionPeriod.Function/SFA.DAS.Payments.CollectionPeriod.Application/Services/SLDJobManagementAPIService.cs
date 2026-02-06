@@ -11,7 +11,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
     public interface ISLDJobManagementAPIService
     {
-        Task<SLDJobManagementAPICollectionPeriod> GetCollectionPeriods();
+        Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods();
     }
 
     public class SLDJobManagementAPIService : ISLDJobManagementAPIService
@@ -22,17 +22,17 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _httpClient = httpClientFactory.CreateClient("SLDJobManagementAPI");
         }
 
-        public async Task<SLDJobManagementAPICollectionPeriod> GetCollectionPeriods()
+        public async Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods()
         {
             var sldResponse = await _httpClient.GetAsync("");
 
             if (sldResponse.IsSuccessStatusCode)
             {
-                var result = await sldResponse.Content.ReadFromJsonAsync<SLDJobManagementAPICollectionPeriod>();
-                return result ?? new SLDJobManagementAPICollectionPeriod();
+                var result = await sldResponse.Content.ReadFromJsonAsync<List<SLDJobManagementAPICollectionPeriod>>();
+                return result ?? new List<SLDJobManagementAPICollectionPeriod>();
             }
 
-            return new SLDJobManagementAPICollectionPeriod();
+            return new List<SLDJobManagementAPICollectionPeriod>();
         }
     }
 }
