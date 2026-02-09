@@ -32,7 +32,7 @@ public class GetCollectionPeriods
 
         var collectionPeriods = await _sldJobManagementAPIService.GetCollectionPeriods(DateTime.Today.ToString("yyyy-MM-dd"));
 
-        if (collectionPeriods != null)
+        if (collectionPeriods != null && collectionPeriods.Any())
         {
             await _updatePaymentsCollectionPeriodService.UpdatePaymentsCollectionPeriodAsync(collectionPeriods);
         }

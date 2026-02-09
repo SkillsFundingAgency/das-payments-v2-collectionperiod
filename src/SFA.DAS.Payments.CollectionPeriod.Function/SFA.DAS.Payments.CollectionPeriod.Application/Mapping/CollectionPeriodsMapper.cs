@@ -10,19 +10,19 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
 {
     public interface ICollectionPeriodMapper
     {
-        public List<CollectionPeriodModel> MapCollectionPeriods(List<SLDJobManagementAPICollectionPeriod> collectionPeriods);
+        public IEnumerable<CollectionPeriodModel> MapCollectionPeriods(IEnumerable<SLDJobManagementAPICollectionPeriod> collectionPeriods);
     }
 
     public class CollectionPeriodMapper : ICollectionPeriodMapper
     {
-        public List<CollectionPeriodModel> MapCollectionPeriods(List<SLDJobManagementAPICollectionPeriod> collectionPeriods)
+        public IEnumerable<CollectionPeriodModel> MapCollectionPeriods(IEnumerable<SLDJobManagementAPICollectionPeriod> collectionPeriods)
         {
             return collectionPeriods.Select(cp => new CollectionPeriodModel
             {
                 AcademicYear = cp.CollectionYear,
                 Period = cp.PeriodNumber,
                 IsOpen = cp.IsOpen
-            }).ToList();
+            });
         }
     }
 }

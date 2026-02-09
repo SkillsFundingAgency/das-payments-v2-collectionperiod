@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage.Blob.Protocol;
+﻿using ESFA.DC.Logging.Interfaces;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using System;
 using System.Collections.Generic;
@@ -13,22 +14,34 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
     public class SLDJobManagementAPIService
     {
         private readonly HttpClient _httpClient;
-        public SLDJobManagementAPIService(IHttpClientFactory httpClientFactory)
+        private readonly ILogger _logger;
+
+        public SLDJobManagementAPIService(HttpClient httpClient, ILogger logger)
         {
-            _httpClient = httpClientFactory.CreateClient("SLDJobManagementAPI");
+            _httpClient = httpClient;
+            _logger = logger;
         }
 
-        public async Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods(string uptoDateStr)
+        public async Task<IEnumerable<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods(string uptoDateStr)
         {
-            var sldResponse = await _httpClient.GetAsync($"upto/{uptoDateStr}/ILR");
-
-            if (sldResponse.IsSuccessStatusCode)
+            try
             {
-                var result = await sldResponse.Content.ReadFromJsonAsync<List<SLDJobManagementAPICollectionPeriod>>();
-                return result ?? new List<SLDJobManagementAPICollectionPeriod>();
-            }
+                var sldResponse = await _httpClient.GetAsync($"{uptoDateStr}/ILR");
 
-            return new List<SLDJobManagementAPICollectionPeriod>();
+                if (sldResponse.IsSuccessStatusCode)
+                {
+                    var result = await sldResponse.Content.ReadFromJsonAsync<IEnumerable<SLDJobManagementAPICollectionPeriod>>();
+                    return result ?? Enumerable.Empty<SLDJobManagementAPICollectionPeriod>();
+                }
+
+                return Enumerable.Empty<SLDJobManagementAPICollectionPeriod>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occurred while calling SLD Job Management API to get collection periods for date: {uptoDateStr}. Exeption: {ex.Message}");
+                throw;
+            }
+            
         }
     }
 }

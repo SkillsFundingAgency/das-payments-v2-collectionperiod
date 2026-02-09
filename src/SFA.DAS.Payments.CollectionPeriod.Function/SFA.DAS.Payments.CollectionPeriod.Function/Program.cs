@@ -24,14 +24,15 @@ builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
 }); 
 
-builder.Services.AddHttpClient<SLDJobManagementAPIService>(options =>
+builder.Services.AddHttpClient<SLDJobManagementAPIService>(client =>
 {
-    options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("SLDJobManagementAPIEndpoint"));
+    client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("SLDJobManagementAPIEndpoint"));
 });
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();
 builder.Services.AddScoped<ICollectionPeriodMapper, CollectionPeriodMapper>();
+builder.Services.AddScoped<UpdatePaymentsCollectionPeriodService>();
 
 
 builder.Build().Run();
