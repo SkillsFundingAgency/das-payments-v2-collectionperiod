@@ -1,4 +1,5 @@
-﻿using SFA.DAS.Payments.CollectionPeriod.Application.Models;
+﻿using Microsoft.WindowsAzure.Storage.Blob.Protocol;
+using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
-    public interface ISLDJobManagementAPIService
-    {
-        Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods();
-    }
-
-    public class SLDJobManagementAPIService : ISLDJobManagementAPIService
+    public class SLDJobManagementAPIService
     {
         private readonly HttpClient _httpClient;
         public SLDJobManagementAPIService(IHttpClientFactory httpClientFactory)
@@ -22,9 +18,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _httpClient = httpClientFactory.CreateClient("SLDJobManagementAPI");
         }
 
-        public async Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods()
+        public async Task<List<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods(string uptoDateStr)
         {
-            var sldResponse = await _httpClient.GetAsync("");
+            var sldResponse = await _httpClient.GetAsync($"upto/{uptoDateStr}/ILR");
 
             if (sldResponse.IsSuccessStatusCode)
             {

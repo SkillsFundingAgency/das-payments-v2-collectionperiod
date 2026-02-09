@@ -10,12 +10,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
-    public interface IUpdatePaymentsCollectionPeriodService
-    {
-        public void UpdatePaymentsCollectionPeriod(List<SLDJobManagementAPICollectionPeriod> collectionPeriods);
-    }
-
-    public class UpdatePaymentsCollectionPeriodService : IUpdatePaymentsCollectionPeriodService
+    public class UpdatePaymentsCollectionPeriodService
     {
         public readonly ICollectionPeriodRepository _collectionPeriodRepository;
         public readonly ICollectionPeriodMapper _collectionPeriodMapper;
@@ -26,11 +21,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _collectionPeriodMapper = collectionPeriodMapper;
         }
 
-        public void UpdatePaymentsCollectionPeriod(List<SLDJobManagementAPICollectionPeriod> collectionPeriods)
+        public async Task UpdatePaymentsCollectionPeriodAsync(List<SLDJobManagementAPICollectionPeriod> collectionPeriods)
         {
             var mappedCollectionPeriods = _collectionPeriodMapper.MapCollectionPeriods(collectionPeriods);
 
-            _collectionPeriodRepository.UpdateCollectionPeriods(mappedCollectionPeriods);
+            await _collectionPeriodRepository.UpdateCollectionPeriods(mappedCollectionPeriods);
         }
     }
 }

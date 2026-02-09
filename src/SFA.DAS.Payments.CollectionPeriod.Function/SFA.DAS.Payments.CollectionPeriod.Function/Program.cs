@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.Payments.Application.Infrastructure.Logging;
 using SFA.DAS.Payments.Application.Repositories;
+using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 
@@ -23,14 +24,14 @@ builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
 }); 
 
-builder.Services.AddHttpClient("SLDJobManagementAPI", options =>
+builder.Services.AddHttpClient<SLDJobManagementAPIService>(options =>
 {
     options.BaseAddress = new Uri(Environment.GetEnvironmentVariable("SLDJobManagementAPIEndpoint"));
 });
 
-builder.Services.AddScoped<IUpdatePaymentsCollectionPeriodService, UpdatePaymentsCollectionPeriodService>();
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();
-builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
+builder.Services.AddScoped<ICollectionPeriodMapper, CollectionPeriodMapper>();
+
 
 builder.Build().Run();
