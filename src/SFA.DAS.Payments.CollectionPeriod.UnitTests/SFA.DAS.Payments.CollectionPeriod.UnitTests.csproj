@@ -20,3 +20,4 @@
 		<ProjectReference Include="../SFA.DAS.Payments.CollectionPeriod.Application/SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
 	</ItemGroup>
 </Project>
+		
