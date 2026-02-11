@@ -22,7 +22,7 @@ stages:
   displayName: 'Build and Unit Tests'
   jobs:
   - template: pipeline-templates/job/code-build.yml
-  #- template: pipeline-templates/job/unittests.yml
+  - template: pipeline-templates/job/unittests.yml
 
 - stage: Deploy_DST
   displayName: 'Deploy to DST'

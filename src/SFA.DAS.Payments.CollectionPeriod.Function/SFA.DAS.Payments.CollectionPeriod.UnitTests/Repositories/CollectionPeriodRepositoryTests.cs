@@ -6,7 +6,7 @@ using SFA.DAS.Payments.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.Model.Core.Entities;
 
-namespace SFA.DAS.Payments.CollectionPeriod.Tests.Repositories
+namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
 {
     [TestFixture]
     public class CollectionPeriodRepositoryTests
