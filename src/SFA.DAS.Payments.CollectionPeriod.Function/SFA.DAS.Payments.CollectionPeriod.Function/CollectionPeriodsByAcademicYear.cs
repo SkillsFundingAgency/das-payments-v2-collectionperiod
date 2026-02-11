@@ -25,11 +25,11 @@ public class CollectionPeriodsByAcademicYear
             return new BadRequestObjectResult("Invalid academic year.");
         }
 
-        _logger.LogInformation("CollectionPeriodsByAcademicYear HTTP trigger function for academic year: {academicYear}.", academicYear);
+        _logger.LogInformation("CollectionPeriodsByAcademicYear HTTP trigger function triggered for academic year: {academicYear}.", academicYear);
 
         var collectionPeriods = await _collectionPeriodRepository.GetCollectionPeriodByAcademicYear(academicYear);
 
-        _logger.LogInformation("CollectionPeriodsByAcademicYear processed for academic year: {academicYear}.", academicYear);
+        _logger.LogInformation("CollectionPeriodsByAcademicYear HTTP trigger function processed for academic year: {academicYear}.", academicYear);
 
         return collectionPeriods.Any() ? new OkObjectResult(collectionPeriods) : new NoContentResult();
     }
