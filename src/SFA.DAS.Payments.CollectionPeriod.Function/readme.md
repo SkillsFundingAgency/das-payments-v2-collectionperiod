@@ -1,6 +1,6 @@
 ## App Settings Required for Local Development
 
-Add the following at the root of the function app ina file labelled `local.settings.json`
+Add the following at the root of the function app in a file labelled `local.settings.json`
 
 ```
 {
@@ -8,11 +8,11 @@ Add the following at the root of the function app ina file labelled `local.setti
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "PaymentsConnectionString": "",
-    "SLDJobManagementAPIEndpoint": ""
+    "PaymentsConnectionString": ""
   },
   "ApplicationInsights": {
-    "ConnectionString": "InstrumentationKey="
-  },
+    "ConnectionString": ""
+  }
 }
+
 ```
