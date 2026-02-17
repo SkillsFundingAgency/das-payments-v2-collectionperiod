@@ -8,7 +8,9 @@ Add the following at the root of the function app in a file labelled `local.sett
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "PaymentsConnectionString": ""
+    "PaymentsConnectionString": "",
+    "SLDJobManagementAPIEndpoint": "",
+    "SyncCollectionPeriodsSchedule": "" //CRON format eg. "*/2 * * * *"
   },
   "ApplicationInsights": {
     "ConnectionString": ""

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.Payments.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
+using SFA.DAS.Payments.CollectionPeriod.Application.Processors;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();
 builder.Services.AddScoped<ICollectionPeriodMapper, CollectionPeriodMapper>();
 builder.Services.AddScoped<UpdatePaymentsCollectionPeriodService>();
+builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsProcessor>();
 
 
 builder.Build().Run();

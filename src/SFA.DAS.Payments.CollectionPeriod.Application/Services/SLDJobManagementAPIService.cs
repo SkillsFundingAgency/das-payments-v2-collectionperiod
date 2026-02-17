@@ -23,7 +23,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         }
 
         public async Task<IEnumerable<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods(string uptoDateStr)
-        {
+        {           
             try
             {
                 var sldResponse = await _httpClient.GetAsync($"{uptoDateStr}/ILR");
