@@ -28,36 +28,38 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
         }
 
         [Test]
-        public async Task GetCollectionPeriodByAcademicYear_ReturnsOpenPeriods()
+        public async Task GetOpenCollectionPeriods_ReturnsOpenPeriods()
         {
             var mockData = new[]{
-                 new CollectionPeriodModel { AcademicYear = 2425, Period = 1, IsOpen = true },
-                 new CollectionPeriodModel { AcademicYear = 2425, Period = 2, IsOpen = false },
-                 new CollectionPeriodModel { AcademicYear = 2324, Period = 1, IsOpen = true },
+                 new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Open },
+                 new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Closed },
+                 new CollectionPeriodModel { AcademicYear = 2324, Period = 1, Status = CollectionPeriodStatus.Open },
             };
 
             _mockContext.CollectionPeriod.AddRange(mockData);
             await _mockContext.SaveChangesAsync();
 
-            var result = await sut.GetCollectionPeriodByAcademicYear(2425);
+            var result = await sut.GetOpenCollectionPeriods();
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.All(cp => cp.AcademicYear == 2425 && cp.IsOpen == true), Is.True);
+            Assert.That(result.All(cp => cp.AcademicYear == 2425 && cp.Status == CollectionPeriodStatus.Open), Is.True);
         }
 
         [Test]
-        public async Task GetCollectionPeriodByAcademicYear_ReturnsEmpty_WhenNoMatches()
+        public async Task GetAllCollectionPeriods_ReturnsAllPeriods()
         {
             var mockData = new[]{
-                 new CollectionPeriodModel { AcademicYear = 2223, Period =1, IsOpen = true },
+                 new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Open },
+                 new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Closed },
+                 new CollectionPeriodModel { AcademicYear = 2324, Period = 1, Status = CollectionPeriodStatus.Open },
             };
 
             _mockContext.CollectionPeriod.AddRange(mockData);
             await _mockContext.SaveChangesAsync();
 
-            var result = await sut.GetCollectionPeriodByAcademicYear(2425);
+            var result = await sut.GetAllCollectionPeriods();
 
-            Assert.That(result, Is.Empty);
+            Assert.That(result.Count(), Is.EqualTo(3));
         }
     }
 }

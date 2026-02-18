@@ -7,7 +7,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
 {
     public interface ICollectionPeriodRepository
     {
-        Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear);
+        Task<IEnumerable<CollectionPeriodModel>> GetOpenCollectionPeriods();
+        Task<IEnumerable<CollectionPeriodModel>> GetAllCollectionPeriods();
     }
 
     public class CollectionPeriodRepository : ICollectionPeriodRepository
@@ -21,16 +22,30 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             _logger = logger;
         }
 
-        public async Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear)
+        public async Task<IEnumerable<CollectionPeriodModel>> GetAllCollectionPeriods()
+        {
+            try
+            {
+                return await _paymentsDataContext.CollectionPeriod.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for GetAllCollectionPeriods. Message {message}", ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CollectionPeriodModel>> GetOpenCollectionPeriods()
         {
             try
             {
                 return await _paymentsDataContext.CollectionPeriod
-                    .Where(cp => cp.AcademicYear == academicYear && cp.IsOpen == true)
+                    .Where(cp => cp.Status == CollectionPeriodStatus.Open)
                     .ToListAsync();
             }
-            catch (Exception ex){
-                _logger.LogError("SQL Error - CollectionPeriodRepository for GetCollectionPeriodByAcademicYear. Message {message}", ex.Message);
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for GetOpenCollectionPeriods. Message {message}", ex.Message);
                 throw;
             }
         }
