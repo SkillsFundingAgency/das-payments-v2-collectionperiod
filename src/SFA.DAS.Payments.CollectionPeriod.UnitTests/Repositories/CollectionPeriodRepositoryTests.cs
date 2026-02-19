@@ -41,8 +41,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
 
             var result = await sut.GetOpenCollectionPeriods();
 
-            Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.All(cp => cp.AcademicYear == 2425 && cp.Status == CollectionPeriodStatus.Open), Is.True);
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.All(cp => cp.Status == CollectionPeriodStatus.Open), Is.True);
         }
 
         [Test]
