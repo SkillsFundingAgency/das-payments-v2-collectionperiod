@@ -10,12 +10,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
 {
     public interface ICollectionPeriodMapper
     {
-        IEnumerable<CollectionPeriodModel> MapCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods);
+        IEnumerable<CollectionPeriodModel> MapToPaymentsCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods);
     }
 
     public class CollectionPeriodMapper : ICollectionPeriodMapper
     {
-        public IEnumerable<CollectionPeriodModel> MapCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
+        public IEnumerable<CollectionPeriodModel> MapToPaymentsCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
         {
             return collectionPeriods.Select(cp => new CollectionPeriodModel
             {
@@ -31,7 +31,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
             {
                 case false when DateTime.UtcNow < cp.StartDateTimeUtc:
                     return CollectionPeriodStatus.NotStarted;
-                case false when DateTime.UtcNow > cp.StartDateTimeUtc:
+                case false when DateTime.UtcNow > cp.StartDateTimeUtc && DateTime.UtcNow < cp.EndDateTimeUtc:
                     return CollectionPeriodStatus.Closed;
                 case false when DateTime.UtcNow > cp.EndDateTimeUtc:
                     return CollectionPeriodStatus.Completed;

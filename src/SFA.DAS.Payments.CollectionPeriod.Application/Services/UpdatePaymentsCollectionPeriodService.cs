@@ -17,7 +17,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
         public async Task UpdatePaymentsCollectionPeriodAsync(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
         {
-            var mappedCollectionPeriods = _collectionPeriodMapper.MapCollectionPeriods(collectionPeriods);
+            var mappedCollectionPeriods = _collectionPeriodMapper.MapToPaymentsCollectionPeriods(collectionPeriods);
 
             await _collectionPeriodRepository.UpdateCollectionPeriods(mappedCollectionPeriods);
         }
