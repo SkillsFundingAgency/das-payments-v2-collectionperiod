@@ -7,7 +7,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
 {
     public interface ICollectionPeriodRepository
     {
-        Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear);
+        Task<IEnumerable<CollectionPeriodModel>> GetOpenCollectionPeriods();
+        Task<IEnumerable<CollectionPeriodModel>> GetAllCollectionPeriods();
         Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
     }
 
@@ -22,17 +23,30 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             _logger = logger;
         }
 
-        public async Task<IEnumerable<CollectionPeriodModel>> GetCollectionPeriodByAcademicYear(short academicYear)
+        public async Task<IEnumerable<CollectionPeriodModel>> GetAllCollectionPeriods()
+        {
+            try
+            {
+                return await _paymentsDataContext.CollectionPeriod.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for GetAllCollectionPeriods. Message {message}", ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CollectionPeriodModel>> GetOpenCollectionPeriods()
         {
             try
             {
                 return await _paymentsDataContext.CollectionPeriod
-                    .Where(cp => cp.AcademicYear == academicYear && cp.IsOpen == true)
+                    .Where(cp => cp.Status == CollectionPeriodStatus.Open)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError("SQL Error - CollectionPeriodRepository for GetCollectionPeriodByAcademicYear. Message {message}", ex.Message);
+                _logger.LogError("SQL Error - CollectionPeriodRepository for GetOpenCollectionPeriods. Message {message}", ex.Message);
                 throw;
             }
         }
@@ -45,9 +59,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                 {
                     var existingCollectionPeriod = _paymentsDataContext.CollectionPeriod
                         .FirstOrDefault(cp => cp.AcademicYear == collectionPeriod.AcademicYear && cp.Period == collectionPeriod.Period);
+
                     if (existingCollectionPeriod != null)
                     {
-                        existingCollectionPeriod.IsOpen = collectionPeriod.IsOpen;
+                        existingCollectionPeriod.Status = collectionPeriod.Status;
                         _paymentsDataContext.CollectionPeriod.Update(existingCollectionPeriod);
                     }
                     else
@@ -55,6 +70,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                         _paymentsDataContext.CollectionPeriod.Add(collectionPeriod);
                     }
                 }
+
                 await _paymentsDataContext.SaveChangesAsync();
             }
             catch (Exception ex)

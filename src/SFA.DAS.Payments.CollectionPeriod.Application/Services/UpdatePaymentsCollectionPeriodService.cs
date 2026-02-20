@@ -1,12 +1,6 @@
 ﻿using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
-using SFA.DAS.Payments.Model.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
@@ -21,7 +15,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _collectionPeriodMapper = collectionPeriodMapper;
         }
 
-        public async Task UpdatePaymentsCollectionPeriodAsync(IEnumerable<SLDJobManagementAPICollectionPeriod> collectionPeriods)
+        public async Task UpdatePaymentsCollectionPeriodAsync(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
         {
             var mappedCollectionPeriods = _collectionPeriodMapper.MapCollectionPeriods(collectionPeriods);
 

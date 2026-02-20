@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
-    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-3" />
+    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-4" />
   </ItemGroup>
 
 </Project>

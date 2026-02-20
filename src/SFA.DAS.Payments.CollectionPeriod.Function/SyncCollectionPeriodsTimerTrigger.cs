@@ -1,9 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.CollectionPeriod.Application.Processors;
-using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Function;
 
@@ -19,7 +16,7 @@ public class SyncCollectionPeriodsTimerTrigger
     }
 
     /// <summary>
-    /// Timer trigger function to get collection periods from SLD Job Management API and update payments collection period in the database.
+    /// Timer trigger function to get collection periods from SLD Job Context API and update payments collection period in the database.
     /// Schedule is configured via app settings key 'SyncCollectionPeriodsSchedule'.
     /// </summary>
     /// <param name="sldAPIQueryTimer"></param>

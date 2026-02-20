@@ -1,13 +1,6 @@
 ﻿using ESFA.DC.Logging.Interfaces;
-using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
@@ -22,7 +15,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<SLDJobManagementAPICollectionPeriod>> GetCollectionPeriods(string uptoDateStr)
+        public async Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(string uptoDateStr)
         {           
             try
             {
@@ -30,15 +23,15 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
-                    var result = await sldResponse.Content.ReadFromJsonAsync<IEnumerable<SLDJobManagementAPICollectionPeriod>>();
-                    return result ?? Enumerable.Empty<SLDJobManagementAPICollectionPeriod>();
+                    var result = await sldResponse.Content.ReadFromJsonAsync<IEnumerable<SLDJobContextCollectionPeriodModel>>();
+                    return result ?? Enumerable.Empty<SLDJobContextCollectionPeriodModel>();
                 }
 
-                return Enumerable.Empty<SLDJobManagementAPICollectionPeriod>();
+                return Enumerable.Empty<SLDJobContextCollectionPeriodModel>();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while calling SLD Job Management API to get collection periods for date: {uptoDateStr}. Exeption: {ex.Message}");
+                _logger.LogError($"Error occurred while calling SLD Job Conext API to get collection periods for date: {uptoDateStr}. Exeption: {ex.Message}");
                 throw;
             }
             

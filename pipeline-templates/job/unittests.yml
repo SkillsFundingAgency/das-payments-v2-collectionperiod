@@ -36,18 +36,18 @@ jobs:
           projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
           arguments: "--filter FullyQualifiedName~UnitTests"
 
-      - task: DotNetCoreCLI@2
-        displayName: "dotnet publish"
-        inputs:
-          command: publish
-          publishWebProjects: false
-          projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
-          arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
-          modifyOutputPath: false
-          vstsFeed: "1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4"
+      # - task: DotNetCoreCLI@2
+      #   displayName: "dotnet publish"
+      #   inputs:
+      #     command: publish
+      #     publishWebProjects: false
+      #     projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
+      #     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
+      #     modifyOutputPath: false
+      #     vstsFeed: "1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4"
 
-      - task: PublishPipelineArtifact@1
-        displayName: "Publish Pipeline Artifact"
-        inputs:
-          targetPath: '$(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
-          artifact: CollectionPeriod-FunctionAppUnitTests
+      # - task: PublishPipelineArtifact@1
+      #   displayName: "Publish Pipeline Artifact"
+      #   inputs:
+      #     targetPath: '$(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
+      #     artifact: CollectionPeriod-FunctionAppUnitTests
