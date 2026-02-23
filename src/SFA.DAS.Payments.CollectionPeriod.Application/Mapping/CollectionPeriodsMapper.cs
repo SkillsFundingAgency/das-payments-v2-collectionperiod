@@ -31,10 +31,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
             {
                 case false when DateTime.UtcNow < cp.StartDateTimeUtc:
                     return CollectionPeriodStatus.NotStarted;
-                case false when DateTime.UtcNow > cp.StartDateTimeUtc && DateTime.UtcNow < cp.EndDateTimeUtc:
+                case false when DateTime.UtcNow > cp.StartDateTimeUtc:
                     return CollectionPeriodStatus.Closed;
-                case false when DateTime.UtcNow > cp.EndDateTimeUtc:
-                    return CollectionPeriodStatus.Completed;
                 case true:
                     return CollectionPeriodStatus.Open;
                 default:

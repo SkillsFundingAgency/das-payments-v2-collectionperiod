@@ -23,9 +23,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
             {
                 PeriodNumber = 1,
                 CollectionYear = 2425,
-                StartDateTimeUtc = new DateTime(2024, 8, 1),
-                EndDateTimeUtc = new DateTime(2024, 8, 31),
-                IsOpen = true
+                StartDateTimeUtc = DateTime.UtcNow.AddDays(-25),
+                EndDateTimeUtc = DateTime.UtcNow.AddDays(5),
+                IsOpen = false
             };
 
             var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
@@ -33,7 +33,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
             Assert.IsNotNull(result);
             Assert.AreEqual(dto.PeriodNumber, result.First().Period);
             Assert.AreEqual(dto.CollectionYear, result.First().AcademicYear);
-            Assert.AreEqual(CollectionPeriodStatus.Open, result.First().Status);
+            Assert.AreEqual(CollectionPeriodStatus.Closed, result.First().Status);
         }
 
         [Test]
@@ -41,17 +41,37 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
         {
             var dto = new SLDJobContextCollectionPeriodModel
             {
-                PeriodNumber = 2,
-                CollectionYear = 2425,
-                StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
-                EndDateTimeUtc = DateTime.UtcNow.AddDays(4),
+                PeriodNumber = 1,
+                CollectionYear = 2526,
+                StartDateTimeUtc = DateTime.Now.AddDays(-30),
+                EndDateTimeUtc = DateTime.Now.AddDays(-1),
                 IsOpen = false
             };
 
             var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
 
             Assert.IsNotNull(result);
+            Assert.AreEqual(dto.PeriodNumber, result.First().Period);
+            Assert.AreEqual(dto.CollectionYear, result.First().AcademicYear);
             Assert.AreEqual(CollectionPeriodStatus.Closed, result.First().Status);
+        }
+
+        [Test]
+        public void Map_ShouldReturnOpenStatus_WhenIsOpenIsTrue()
+        {
+            var dto = new SLDJobContextCollectionPeriodModel
+            {
+                PeriodNumber = 2,
+                CollectionYear = 2526,
+                StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
+                EndDateTimeUtc = DateTime.UtcNow.AddDays(4),
+                IsOpen = true
+            };
+
+            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(CollectionPeriodStatus.Open, result.First().Status);
         }
 
 
@@ -61,7 +81,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
             var dto = new SLDJobContextCollectionPeriodModel
             {
                 PeriodNumber = 3,
-                CollectionYear = 2425,
+                CollectionYear = 2526,
                 StartDateTimeUtc = DateTime.UtcNow.AddDays(1),
                 EndDateTimeUtc = DateTime.UtcNow.AddDays(10),
                 IsOpen = false
@@ -73,23 +93,24 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
             Assert.AreEqual(CollectionPeriodStatus.NotStarted, result.First().Status);
         }
 
-        [Test]
-        public void Map_ShouldReturnCompletedStatus_WhenIsOpenIsFalseAndEndDateInPast()
-        {
-            var dto = new SLDJobContextCollectionPeriodModel
-            {
-                PeriodNumber = 4,
-                CollectionYear = 2425,
-                StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
-                EndDateTimeUtc = DateTime.UtcNow.AddDays(-1),
-                IsOpen = false
-            };
+        //Not Testable here
+        //[Test]
+        //public void Map_ShouldReturnCompletedStatus_WhenIsOpenIsFalseAndEndDateInPast()
+        //{
+        //    var dto = new SLDJobContextCollectionPeriodModel
+        //    {
+        //        PeriodNumber = 4,
+        //        CollectionYear = 2425,
+        //        StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
+        //        EndDateTimeUtc = DateTime.UtcNow.AddDays(-1),
+        //        IsOpen = false
+        //    };
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+        //    var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(CollectionPeriodStatus.Completed, result.First().Status);
-        }
+        //    Assert.IsNotNull(result);
+        //    Assert.AreEqual(CollectionPeriodStatus.Completed, result.First().Status);
+        //}
 
         [Test]
         public void Map_ShouldHandleMultipleInputs()
@@ -99,7 +120,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 new SLDJobContextCollectionPeriodModel
                 {
                     PeriodNumber = 2,
-                    CollectionYear = 2425,
+                    CollectionYear = 2526,
                     StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
                     EndDateTimeUtc = DateTime.UtcNow.AddDays(4),
                     IsOpen = false
@@ -107,25 +128,17 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 new SLDJobContextCollectionPeriodModel
                 {
                     PeriodNumber = 3,
-                    CollectionYear = 2425,
+                    CollectionYear = 2526,
                     StartDateTimeUtc = DateTime.UtcNow.AddDays(1),
                     EndDateTimeUtc = DateTime.UtcNow.AddDays(10),
                     IsOpen = false
                 },
                 new SLDJobContextCollectionPeriodModel
                 {
-                    PeriodNumber = 4,
-                    CollectionYear = 2425,
-                    StartDateTimeUtc = DateTime.UtcNow.AddDays(-10),
-                    EndDateTimeUtc = DateTime.UtcNow.AddDays(-1),
-                    IsOpen = false
-                },
-                new SLDJobContextCollectionPeriodModel
-                {
                     PeriodNumber = 1,
-                    CollectionYear = 2425,
-                    StartDateTimeUtc = new DateTime(2024, 8, 1),
-                    EndDateTimeUtc = new DateTime(2024, 8, 31),
+                    CollectionYear = 2526,
+                    StartDateTimeUtc = DateTime.UtcNow.AddDays(-2),
+                    EndDateTimeUtc = DateTime.UtcNow.AddDays(28),
                     IsOpen = true
                 }
             };
@@ -133,11 +146,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
 
             var result = _mockMapper.MapToPaymentsCollectionPeriods(dtos).ToList();
 
-            Assert.That(result.Count, Is.EqualTo(4));
+            Assert.That(result.Count, Is.EqualTo(3));
             Assert.AreEqual(CollectionPeriodStatus.Closed, result[0].Status);
             Assert.AreEqual(CollectionPeriodStatus.NotStarted, result[1].Status);
-            Assert.AreEqual(CollectionPeriodStatus.Completed, result[2].Status);
-            Assert.AreEqual(CollectionPeriodStatus.Open, result[3].Status);
+            Assert.AreEqual(CollectionPeriodStatus.Open, result[2].Status);
         }
 
         [Test]

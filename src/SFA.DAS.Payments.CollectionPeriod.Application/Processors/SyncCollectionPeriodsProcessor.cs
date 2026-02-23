@@ -24,7 +24,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Processors
 
             if (collectionPeriods != null && collectionPeriods.Any())
             {
-                await _updatePaymentsCollectionPeriodService.UpdatePaymentsCollectionPeriodAsync(collectionPeriods);
+                await _updatePaymentsCollectionPeriodService.UpdatePaymentsCollectionPeriod(collectionPeriods);
             }
         }
     }
