@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Models
 {
-    public class CollectionYearResponseModel : BaseCollectionPeriodServiceResponseModel
+    public class CollectionYearResponseModel
     {
         public short Year { get; set; }
         public string Status { get; set; }
