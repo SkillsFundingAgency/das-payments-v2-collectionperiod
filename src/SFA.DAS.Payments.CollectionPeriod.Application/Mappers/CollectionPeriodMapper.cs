@@ -5,6 +5,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
 {
     public interface ICollectionPeriodMapper
     {
+
         public CollectionPeriodsForCollectionYearResponseModel MapToCollectionPeriodsForCollectionYearResponseModel(IEnumerable<CollectionPeriodModel> openCollectionPeriods, short year, CollectionPeriodStatus? status);
 
         public IEnumerable<CollectionYearResponseModel> MapToOpenCollectionYearResponseModel(IEnumerable<short> openCollectionYears);
@@ -14,6 +15,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
 
     public class CollectionPeriodMapper : ICollectionPeriodMapper
     {
+        // Response for /collectionyear/{year}
         public CollectionPeriodsForCollectionYearResponseModel MapToCollectionPeriodsForCollectionYearResponseModel(IEnumerable<CollectionPeriodModel> collectionPeriods, short year, CollectionPeriodStatus? status)
         {
             var mappedPeriods = collectionPeriods.Select(period => new CollectionPeriodResponseModel
@@ -33,6 +35,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
             };
         }
 
+        // Response for /collectionyear
         public IEnumerable<CollectionYearResponseModel> MapToOpenCollectionYearResponseModel(IEnumerable<short> openCollectionYears)
         {
             return openCollectionYears.Select(year => new CollectionYearResponseModel
@@ -42,6 +45,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
             });
         }
 
+        // Response for collectionyear/{year}/collectionperiod/{id}
         public CollectionPeriodResponseModel MapToCollectionPeriodResponseModel(CollectionPeriodModel collectionPeriod)
         {
             return new CollectionPeriodResponseModel

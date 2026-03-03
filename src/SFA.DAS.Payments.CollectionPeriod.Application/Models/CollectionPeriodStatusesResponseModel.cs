@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Models
 {
-    public class CollectionPeriodStatusesResponseModel : BaseCollectionPeriodServiceResponseModel
+    public class CollectionPeriodStatusesResponseModel
     {
         public string[] Status =>
         [
