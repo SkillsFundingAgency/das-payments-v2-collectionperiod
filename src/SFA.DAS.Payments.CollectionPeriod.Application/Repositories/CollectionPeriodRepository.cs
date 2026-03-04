@@ -10,7 +10,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
     {
         public Task<IEnumerable<short>> OpenCollectionYears();
         public Task<IEnumerable<CollectionPeriodModel>> CollectionYear(short collectionYear, CollectionPeriodStatus? status);
-        public Task<CollectionPeriodsForCollectionYearResponseModel> CollectionPeriodsForCollectionYear(short? collectionYear, CollectionPeriodStatus? status);
         public Task<CollectionPeriodModel> CollectionPeriodForCollectionYear(short? collectionYear, short? period);
     }
 
@@ -24,7 +23,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             _paymentsDataContext = paymentsDataContext;
             _logger = logger;
         }
-
 
         public async Task<IEnumerable<CollectionPeriodModel>> CollectionYear(short collectionYear, CollectionPeriodStatus? status)
         {
@@ -63,12 +61,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                 _logger.LogError("SQL Error - CollectionPeriodRepository for GetOpenCollectionPeriods. Message {message}", ex.Message);
                 throw;
             }
-        }
-
-        // Retrieve collection periods for a given collection year, optionally filtered by status
-        public async Task<CollectionPeriodsForCollectionYearResponseModel?> CollectionPeriodsForCollectionYear(short? collectionYear, CollectionPeriodStatus? status)
-        {
-            throw new NotImplementedException();
         }
 
         // Retrieve a specific collection period for a given collection year and period number

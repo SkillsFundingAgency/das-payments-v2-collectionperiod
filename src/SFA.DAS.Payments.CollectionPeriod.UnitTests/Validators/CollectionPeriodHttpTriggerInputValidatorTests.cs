@@ -8,5 +8,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Validators
 {
     internal class CollectionPeriodHttpTriggerInputValidatorTests
     {
+        //TODO: Implement tests for CollectionPeriodHttpTriggerInputValidator
     }
 }
