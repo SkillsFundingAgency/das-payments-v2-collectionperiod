@@ -9,11 +9,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.Function;
 public class TestSLDAPIHttpTrigger
 {
     private readonly ILogger<TestSLDAPIHttpTrigger> _logger;
-    private readonly ISLDJobManagementAPIService sLDJobManagementAPIService;
+    private readonly SLDJobManagementAPIService _sLDJobManagementAPIService;
 
-    public TestSLDAPIHttpTrigger(ILogger<TestSLDAPIHttpTrigger> logger)
+    public TestSLDAPIHttpTrigger(ILogger<TestSLDAPIHttpTrigger> logger, SLDJobManagementAPIService sLDJobManagementAPIService)
     {
         _logger = logger;
+        _sLDJobManagementAPIService = sLDJobManagementAPIService
     }
 
     [Function("TestSLDAPIHttpTrigger")]
@@ -21,7 +22,7 @@ public class TestSLDAPIHttpTrigger
     {
         _logger.LogInformation("TestSLDAPIHttpTrigger function processed a request.");
 
-        var result = await sLDJobManagementAPIService.GetCollectionPeriods(DateTime.Now.ToString("yyyy-MM-dd"));
+        var result = await _sLDJobManagementAPIService.GetCollectionPeriods(DateTime.Now.ToString("yyyy-MM-dd"));
 
         return new OkObjectResult(result);
     }
