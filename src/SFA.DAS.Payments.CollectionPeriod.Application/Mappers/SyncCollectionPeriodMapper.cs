@@ -1,21 +1,17 @@
 ﻿using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.Model.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
+namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
 {
-    public interface ICollectionPeriodMapper
+    public interface ISyncCollectionPeriodMapper
     {
-        IEnumerable<CollectionPeriodModel> MapToPaymentsCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods);
+        IEnumerable<CollectionPeriodModel> MapToPaymentsDBCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods);
     }
 
-    public class CollectionPeriodMapper : ICollectionPeriodMapper
+    public class SyncCollectionPeriodMapper : ISyncCollectionPeriodMapper
     {
-        public IEnumerable<CollectionPeriodModel> MapToPaymentsCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
+
+        public IEnumerable<CollectionPeriodModel> MapToPaymentsDBCollectionPeriods(IEnumerable<SLDJobContextCollectionPeriodModel> collectionPeriods)
         {
             return collectionPeriods.Select(cp => new CollectionPeriodModel
             {
@@ -39,5 +35,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mapping
                     return null;
             }
         }
+
     }
 }

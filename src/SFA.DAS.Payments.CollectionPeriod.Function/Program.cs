@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SFA.DAS.Payments.Application.Repositories;
-using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
+using SFA.DAS.Payments.CollectionPeriod.Application.Mappers;
 using SFA.DAS.Payments.CollectionPeriod.Application.Processors;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
+using SFA.DAS.Payments.CollectionPeriod.Application.Validators;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 
 var builder = FunctionsApplication.CreateBuilder(args);
@@ -30,9 +31,12 @@ builder.Services.AddHttpClient<SLDJobManagementAPIService>(client =>
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();
+builder.Services.AddScoped<ICollectionPeriodFunctionProcessor, CollectionPeriodFunctionProcessor>();
 builder.Services.AddScoped<ICollectionPeriodMapper, CollectionPeriodMapper>();
-builder.Services.AddScoped<UpdatePaymentsCollectionPeriodService>();
-builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsProcessor>();
+builder.Services.AddScoped<ICollectionPeriodHttpTriggerInputValidator, CollectionPeriodHttpTriggerInputValidator>();
+builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapper>();
+builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
+builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
 
 
 builder.Build().Run();

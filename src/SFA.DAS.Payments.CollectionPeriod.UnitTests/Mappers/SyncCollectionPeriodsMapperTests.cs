@@ -1,19 +1,19 @@
 ﻿using NUnit.Framework;
-using SFA.DAS.Payments.CollectionPeriod.Application.Mapping;
+using SFA.DAS.Payments.CollectionPeriod.Application.Mappers;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.Model.Core.Entities;
 
-namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
+namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
 {
     [TestFixture]
-    public class CollectionPeriodMapperTests
+    public class SyncCollectionPeriodsMapperTests
     {
-        private ICollectionPeriodMapper _mockMapper;
+        private ISyncCollectionPeriodMapper _mockMapper;
 
         [SetUp]
         public void Setup()
         {
-            _mockMapper = new CollectionPeriodMapper();
+            _mockMapper = new SyncCollectionPeriodMapper();
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 IsOpen = false
             };
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods([dto]);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(dto.PeriodNumber, result.First().Period);
@@ -48,7 +48,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 IsOpen = false
             };
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods([dto]);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(dto.PeriodNumber, result.First().Period);
@@ -68,7 +68,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 IsOpen = true
             };
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods([dto]);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(CollectionPeriodStatus.Open, result.First().Status);
@@ -87,7 +87,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
                 IsOpen = false
             };
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods([dto]);
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods([dto]);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(CollectionPeriodStatus.NotStarted, result.First().Status);
@@ -144,7 +144,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
             };
 
 
-            var result = _mockMapper.MapToPaymentsCollectionPeriods(dtos).ToList();
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods(dtos).ToList();
 
             Assert.That(result.Count, Is.EqualTo(3));
             Assert.AreEqual(CollectionPeriodStatus.Closed, result[0].Status);
@@ -155,7 +155,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Maping
         [Test]
         public void Map_ShouldHandleEmptyInput()
         {
-            var result = _mockMapper.MapToPaymentsCollectionPeriods(Array.Empty<SLDJobContextCollectionPeriodModel>());
+            var result = _mockMapper.MapToPaymentsDBCollectionPeriods(Array.Empty<SLDJobContextCollectionPeriodModel>());
 
             Assert.IsNotNull(result);
             Assert.IsEmpty(result);

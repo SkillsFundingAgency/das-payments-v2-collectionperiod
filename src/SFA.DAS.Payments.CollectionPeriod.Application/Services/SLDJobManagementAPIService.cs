@@ -1,15 +1,21 @@
 ﻿using ESFA.DC.Logging.Interfaces;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using System.Net.Http.Json;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
-    public class SLDJobManagementAPIService
+    public interface ISLDJobManagementAPIService
+    {
+        Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(string uptoDateStr);
+    }
+
+    public class SLDJobManagementAPIService : ISLDJobManagementAPIService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<SLDJobManagementAPIService> _logger;
 
-        public SLDJobManagementAPIService(HttpClient httpClient, ILogger logger)
+        public SLDJobManagementAPIService(HttpClient httpClient, ILogger<SLDJobManagementAPIService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;

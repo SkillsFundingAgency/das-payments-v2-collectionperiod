@@ -19,5 +19,9 @@
 	<ItemGroup>
 		<ProjectReference Include="../SFA.DAS.Payments.CollectionPeriod.Application/SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Maping\" />
+	  <Folder Include="Services\" />
+	</ItemGroup>
 </Project>
 		
