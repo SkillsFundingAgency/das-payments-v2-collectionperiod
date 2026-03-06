@@ -14,7 +14,7 @@ public class TestSLDAPIHttpTrigger
     public TestSLDAPIHttpTrigger(ILogger<TestSLDAPIHttpTrigger> logger, SLDJobManagementAPIService sLDJobManagementAPIService)
     {
         _logger = logger;
-        _sLDJobManagementAPIService = sLDJobManagementAPIService
+        _sLDJobManagementAPIService = sLDJobManagementAPIService;
     }
 
     [Function("TestSLDAPIHttpTrigger")]
