@@ -36,7 +36,5 @@ builder.Services.AddScoped<ICollectionPeriodMapper, CollectionPeriodMapper>();
 builder.Services.AddScoped<ICollectionPeriodHttpTriggerInputValidator, CollectionPeriodHttpTriggerInputValidator>();
 builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapper>();
 builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
-builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
-
 
 builder.Build().Run();
