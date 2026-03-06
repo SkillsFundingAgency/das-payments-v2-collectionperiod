@@ -13,12 +13,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Processors
 
     public class SyncCollectionPeriodsFunctionProcessor : ISyncCollectionPeriodsProcessor
     {
-        private readonly ISLDJobManagementAPIService _sldJobManagementAPIService;
+        private readonly SLDJobManagementAPIService _sldJobManagementAPIService;
         private readonly ISyncCollectionPeriodMapper _mapper;
         private readonly ILogger<SyncCollectionPeriodsFunctionProcessor> _logger;
         private readonly ICollectionPeriodRepository _collectionPeriodRepository;
 
-        public SyncCollectionPeriodsFunctionProcessor(ISLDJobManagementAPIService sldJobManagementAPIService, ISyncCollectionPeriodMapper syncCollectionPeriodMapper, ICollectionPeriodRepository collectionPeriodRepository, ILogger<SyncCollectionPeriodsFunctionProcessor> logger)
+        public SyncCollectionPeriodsFunctionProcessor(    SLDJobManagementAPIService sldJobManagementAPIService, ISyncCollectionPeriodMapper syncCollectionPeriodMapper, ICollectionPeriodRepository collectionPeriodRepository, ILogger<SyncCollectionPeriodsFunctionProcessor> logger)
         {
             _sldJobManagementAPIService = sldJobManagementAPIService;
             _mapper = syncCollectionPeriodMapper;
