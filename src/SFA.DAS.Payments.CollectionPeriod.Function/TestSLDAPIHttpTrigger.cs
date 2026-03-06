@@ -17,7 +17,7 @@ public class TestSLDAPIHttpTrigger
     }
 
     [Function("TestSLDAPIHttpTrigger")]
-    public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+    public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req)
     {
         _logger.LogInformation("TestSLDAPIHttpTrigger function processed a request.");
 
