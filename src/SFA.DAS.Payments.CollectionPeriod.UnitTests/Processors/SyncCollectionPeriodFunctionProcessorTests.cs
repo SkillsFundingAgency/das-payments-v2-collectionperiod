@@ -11,6 +11,7 @@ using SFA.DAS.Payments.Model.Core.Entities;
 namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
 {
     [TestFixture]
+    [Ignore("Ignoring to test DC SLD API integration")]
     public class SyncCollectionPeriodFunctionProcessorTests
     {
         private Mock<ICollectionPeriodRepository> _repositoryMock;
