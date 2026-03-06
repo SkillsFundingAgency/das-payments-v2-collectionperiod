@@ -10,7 +10,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(string uptoDateStr);
     }
 
-    public class SLDJobManagementAPIService : ISLDJobManagementAPIService
+    public class SLDJobManagementAPIService
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<SLDJobManagementAPIService> _logger;
