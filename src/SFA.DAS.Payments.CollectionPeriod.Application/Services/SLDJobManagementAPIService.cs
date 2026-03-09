@@ -25,7 +25,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         {           
             try
             {
-                var sldResponse = await _httpClient.GetAsync($"{uptoDateStr}/ILR");
+                var sldResponse = await _httpClient.GetAsync($"returnperiod/upto/{uptoDateStr}/ILR");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
