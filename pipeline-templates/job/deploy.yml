@@ -39,7 +39,8 @@ jobs:
           displayName: 'Azure Function App Deploy'
           inputs:
             azureSubscription: ${{ parameters.azureSubscription }}
-            appType: functionApp
+            appType: functionAppLinux
+            isFlexConsumption: true
             appName: ${{ parameters.appName }}
             package: '$(pipeline.workspace)/CollectionPeriod-FunctionApp/CollectionPeriod-FunctionApp.zip'
             deploymentMethod: zipDeploy
