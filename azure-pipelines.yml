@@ -9,6 +9,13 @@ variables:
   value : 'x64'
 - name: BuildConfiguration
   value: 'release'
+- group: Common - ServiceBus Connection String
+- group: Common - Connection String
+- group: Common - Database Names
+- group: Common - Database Usernames
+- group: Common - Project Level
+- group: Common - URLs
+
 resources:
   repositories:
     - repository: das-payments-v2-collectionperiod
@@ -22,7 +29,7 @@ stages:
   displayName: 'Build and Unit Tests'
   jobs:
   - template: pipeline-templates/job/code-build.yml
-  #- template: pipeline-templates/job/unittests.yml
+  - template: pipeline-templates/job/unittests.yml
 
 - stage: Deploy_DST
   displayName: 'Deploy to DST'
@@ -30,12 +37,6 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-DST - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
-
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -51,12 +52,6 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-DAS - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
- 
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -72,12 +67,6 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-SIT - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
-  
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -93,12 +82,6 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-ETE - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
- 
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -114,12 +97,6 @@ stages:
   - name: tagEnvironment
     value: Dev/Test
   - group: DCOL-MO - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
-  
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -134,13 +111,7 @@ stages:
   variables:
   - name: tagEnvironment
     value: Dev/Test
-  - group: DCOL-PD - Environment Key Vault Secrets
-  - group:  Common - ServiceBus Connection String
-  - group : Common - Connection String
-  - group : Common - Database Names
-  - group : Common - Database Usernames
-  - group : Common - Project Level
-  
+  - group: DCOL-PD - Environment Key Vault Secrets 
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -148,8 +119,3 @@ stages:
       environmentName: PD
       azureSubscription: DCOLPDVSTS
       appName: DCOL-PD-CollectionPeriod-WEU
-
-
-
-
-

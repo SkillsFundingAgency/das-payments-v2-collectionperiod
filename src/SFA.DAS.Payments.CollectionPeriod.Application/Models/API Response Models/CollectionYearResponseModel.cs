@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Models
 {
-    public class SLDJobManagementAPICollectionPeriod
+    public class CollectionYearResponseModel
     {
-        public byte PeriodNumber { get; set; }
-        public short CollectionYear { get; set; }
-        public bool IsOpen { get; set; }
+        public short Year { get; set; }
+        public string Status { get; set; }
     }
 
 }

@@ -5,24 +5,26 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.Payments.CollectionPeriod.Application.Handlers;
 using SFA.DAS.Payments.PeriodEnd.Messages.Events;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Function;
 
-public class HandlePeriodEndStopped
+public class PeriodEndStoppedServiceBusTrigger
 {
-    private readonly ILogger<HandlePeriodEndStopped> _logger;
+    private readonly ILogger<PeriodEndStoppedServiceBusTrigger> _logger;
+    private readonly IPeriodEndStoppedEventHandler _periodEndStoppedEventHandler;
 
-    public HandlePeriodEndStopped(ILogger<HandlePeriodEndStopped> logger)
+    public PeriodEndStoppedServiceBusTrigger(ILogger<PeriodEndStoppedServiceBusTrigger> logger, IPeriodEndStoppedEventHandler periodEndStoppedEventHandler)
     {
         _logger = logger;
+        _periodEndStoppedEventHandler = periodEndStoppedEventHandler;
     }
 
-    [Function(nameof(HandlePeriodEndStopped))]
+    [Function(nameof(PeriodEndStoppedServiceBusTrigger))]
     public async Task Run(
         [ServiceBusTrigger("myqueue", Connection = "")]
-        ServiceBusReceivedMessage message,
-        ServiceBusMessageActions messageActions)
+        ServiceBusReceivedMessage message, ServiceBusMessageActions messageActions)
     {
         _logger.LogInformation("Message ID: {id}", message.MessageId);
         _logger.LogInformation("Message Body: {body}", message.Body);
@@ -30,7 +32,7 @@ public class HandlePeriodEndStopped
 
         var msg = JsonSerializer.Deserialize<PeriodEndStoppedEvent>(message.Body.ToString());
 
-
+        await _periodEndStoppedEventHandler.Handle(msg);
 
         await messageActions.CompleteMessageAsync(message);
     }

@@ -1,6 +1,6 @@
 ## App Settings Required for Local Development
 
-Add the following at the root of the function app ina file labelled `local.settings.json`
+Add the following at the root of the function app in a file labelled `local.settings.json`
 
 ```
 {
@@ -10,10 +10,11 @@ Add the following at the root of the function app ina file labelled `local.setti
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "PaymentsConnectionString": "",
     "SLDJobManagementAPIEndpoint": "",
-    "ServiceBusConnectionString": ""
+    "SyncCollectionPeriodsSchedule": "" //CRON format eg. "*/2 * * * *"
   },
   "ApplicationInsights": {
-    "ConnectionString": "InstrumentationKey="
+    "ConnectionString": ""
   }
 }
+
 ```

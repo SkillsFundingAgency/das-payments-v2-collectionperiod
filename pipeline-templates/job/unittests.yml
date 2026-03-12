@@ -1,55 +1,53 @@
 jobs:
-- job: UnitTests
-  pool:
-    name: DCT
-    workspace:
-      clean: all
-  
+  - job: UnitTests
+    pool:
+      name: DCT
+      workspace:
+        clean: all
 
+    variables:
+      BuildConfiguration: "Release"
 
-  variables:
-    BuildConfiguration: 'Release'
+    steps:
+      - task: UseDotNet@2
+        displayName: "Use .NET Core sdk 8.0.x"
+        inputs:
+          version: 8.0.x
+          performMultiLevelLookup: true
 
-  steps:
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk 8.0.x'
-    inputs:
-      version: 8.0.x
-      performMultiLevelLookup: true
+      - task: DotNetCoreCLI@2
+        displayName: "dotnet restore"
+        inputs:
+          command: restore
+          projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
+          vstsFeed: "1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4"
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet restore'
-    inputs:
-      command: restore
-      projects: src/SFA.DAS.Payments.CollectionPeriod.Function.Tests/SFA.DAS.Payments.CollectionPeriod.Function.Tests.csproj
-      vstsFeed: '1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4'
+      - task: DotNetCoreCLI@2
+        displayName: "dotnet build"
+        inputs:
+          projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
+          arguments: "--configuration $(BuildConfiguration)"
+          vstsFeed: "1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4"
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet build'
-    inputs:
-      projects: src/SFA.DAS.Payments.CollectionPeriod.Function.Tests/SFA.DAS.Payments.CollectionPeriod.Function.Tests.csproj
-      arguments: '--configuration $(BuildConfiguration)'
-      vstsFeed: '1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4'
+      - task: DotNetCoreCLI@2
+        displayName: "dotnet test UnitTest Projects"
+        inputs:
+          command: test
+          projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
+          arguments: "--filter FullyQualifiedName~UnitTests"
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet test UnitTest Projects'
-    inputs:
-      command: test
-      projects: src/SFA.DAS.Payments.CollectionPeriod.Function.Tests/SFA.DAS.Payments.CollectionPeriod.Function.Tests.csproj
-      arguments: '--filter FullyQualifiedName~UnitTests'
+      # - task: DotNetCoreCLI@2
+      #   displayName: "dotnet publish"
+      #   inputs:
+      #     command: publish
+      #     publishWebProjects: false
+      #     projects: src/SFA.DAS.Payments.CollectionPeriod.UnitTests/SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj
+      #     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
+      #     modifyOutputPath: false
+      #     vstsFeed: "1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4"
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet publish'
-    inputs:
-      command: publish
-      publishWebProjects: false
-      projects: src/SFA.DAS.Payments.CollectionPeriod.Function.Tests/SFA.DAS.Payments.CollectionPeriod.Function.Tests.csproj
-      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
-      modifyOutputPath: false
-      vstsFeed: '1d5deb2d-cf8b-4bb1-b147-d13bc246e3f4'
-
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Pipeline Artifact'
-    inputs:
-      targetPath: '$(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
-      artifact: CollectionPeriod-FunctionAppUnitTests
+      # - task: PublishPipelineArtifact@1
+      #   displayName: "Publish Pipeline Artifact"
+      #   inputs:
+      #     targetPath: '$(build.artifactstagingdirectory)\CollectionPeriod-FunctionAppUnitTests'
+      #     artifact: CollectionPeriod-FunctionAppUnitTests
