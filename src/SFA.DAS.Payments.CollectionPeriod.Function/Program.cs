@@ -20,7 +20,8 @@ builder.Services
 
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
-    options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
+    var connectionString = builder.Configuration["PaymentsConnectionString"];
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();

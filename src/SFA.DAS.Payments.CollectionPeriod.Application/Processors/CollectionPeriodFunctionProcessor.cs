@@ -16,7 +16,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Processors
 {
     public interface ICollectionPeriodFunctionProcessor
     {
-        Task<IEnumerable<CollectionYearResponseModel>> ProcessOpenCollectionYears();
+        Task<IEnumerable<CollectionYearResponseModel>> ProcessCollectionYear();
 
         Task<CollectionPeriodsForCollectionYearResponseModel> ProcessCollectionYear(short? collectionYear, CollectionPeriodStatus? status);
 
@@ -36,7 +36,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Processors
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CollectionYearResponseModel>> ProcessOpenCollectionYears()
+        public async Task<IEnumerable<CollectionYearResponseModel>> ProcessCollectionYear()
         {
             //Retrieve a list of currently open collection years
 
