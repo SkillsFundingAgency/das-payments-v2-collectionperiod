@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Application\SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
+    <ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Infrastructure\SFA.DAS.Payments.CollectionPeriod.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

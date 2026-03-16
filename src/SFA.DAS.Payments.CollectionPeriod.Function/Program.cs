@@ -9,6 +9,9 @@ using SFA.DAS.Payments.CollectionPeriod.Application.Processors;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Validators;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
+using SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -37,5 +40,12 @@ builder.Services.AddScoped<ICollectionPeriodHttpTriggerInputValidator, Collectio
 builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapper>();
 builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
 builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
+
+builder.Services.AddHostedService<SetupMessagingInfrastructure>(
+    serviceProvider => new SetupMessagingInfrastructure(
+        serviceProvider.GetRequiredService<ILogger<SetupMessagingInfrastructure>>(),
+        serviceProvider.GetRequiredService<IConfiguration>()
+    )
+);
 
 builder.Build().Run();

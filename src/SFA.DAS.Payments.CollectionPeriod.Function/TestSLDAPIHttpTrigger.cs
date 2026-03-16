@@ -17,6 +17,12 @@ public class TestSLDAPIHttpTrigger
         _sLDJobManagementAPIService = sLDJobManagementAPIService;
     }
 
+    /// <summary>
+    /// This is a test function to verify connectivity to the SLD Job Management API. 
+    /// Make sure to remove after integration is tested and working as expected.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns></returns>
     [Function("TestSLDAPIHttpTrigger")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req)
     {
