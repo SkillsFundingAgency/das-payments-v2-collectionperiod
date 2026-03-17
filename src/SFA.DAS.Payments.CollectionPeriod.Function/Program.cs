@@ -41,11 +41,11 @@ builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapp
 builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
 builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
 
-builder.Services.AddHostedService<SetupMessagingInfrastructure>(
-    serviceProvider => new SetupMessagingInfrastructure(
-        serviceProvider.GetRequiredService<ILogger<SetupMessagingInfrastructure>>(),
-        serviceProvider.GetRequiredService<IConfiguration>()
-    )
-);
+//builder.Services.AddHostedService<SetupMessagingInfrastructure>(
+//    serviceProvider => new SetupMessagingInfrastructure(
+//        serviceProvider.GetRequiredService<ILogger<SetupMessagingInfrastructure>>(),
+//        serviceProvider.GetRequiredService<IConfiguration>()
+//    )
+//);
 
 builder.Build().Run();
