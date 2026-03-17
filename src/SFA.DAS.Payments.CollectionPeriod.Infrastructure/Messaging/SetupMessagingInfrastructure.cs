@@ -142,6 +142,15 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
             var topicName = _configuration.GetConnectionString("PaymentsTopicName");
             var subscriptionName = _configuration.GetConnectionString("CollectionPeriodSubscriptionName");
 
+            if (string.IsNullOrEmpty(serviceBusConnectionString) ||
+                string.IsNullOrEmpty(queueName) ||
+                string.IsNullOrEmpty(topicName) ||
+                string.IsNullOrEmpty(subscriptionName))
+            {
+                _logger.LogWarning("One or more required configuration values are missing. Skipping messaging infrastructure setup.");
+                return;
+            }
+
             await InitialiseCollectionPeriodQueue(serviceBusConnectionString, queueName);
             await InitialiseCollectionPeriodSubscription(serviceBusConnectionString, topicName, subscriptionName, queueName);
             await CreatePeriodEndStoppedEventFilter(topicName, subscriptionName, serviceBusConnectionString);
