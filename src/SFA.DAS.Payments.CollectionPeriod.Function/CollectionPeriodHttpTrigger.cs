@@ -23,8 +23,20 @@ public class CollectionPeriodHttpTrigger
         _validator = validator;
     }
 
+    [Function("CollectionYears")]
+    public async Task<IActionResult> HandleCollectionYearsRoute([HttpTrigger(AuthorizationLevel.Function, "get", Route = "collectionYear")] HttpRequest req)
+    {
+        _logger.LogInformation("CollectionYear HTTP trigger function triggered - CollectionYear");
+
+        var responseCollectionYears = await _processor.ProcessCollectionYear();
+
+        return responseCollectionYears == null
+        ? new NoContentResult()
+        : new OkObjectResult(responseCollectionYears);
+    }
+
     [Function("CollectionYear")]
-    public async Task<IActionResult> HandleCollectionYearRoute([HttpTrigger(AuthorizationLevel.Function, "get", Route = "collectionYear/{collectionYear?}")] HttpRequest req, short? collectionYear)
+    public async Task<IActionResult> HandleCollectionYearRoute([HttpTrigger(AuthorizationLevel.Function, "get", Route = "collectionYear/{collectionYear}")] HttpRequest req, short collectionYear)
     {
         _logger.LogInformation("CollectionYears HTTP trigger function triggered - CollectionYear");
 
@@ -32,20 +44,12 @@ public class CollectionPeriodHttpTrigger
 
         try
         {
+            _validator.ValidateCollectionYear(collectionYear);
             status = _validator.ValidateStatus(req.Query["status"]);
         }
         catch (Exception ex)
         {
             return new BadRequestObjectResult(ex.Message);
-        }
-
-        if (!collectionYear.HasValue)
-        {
-            var responseOpenPeriods = await _processor.ProcessOpenCollectionYears();
-
-            return responseOpenPeriods == null
-            ? new NoContentResult()
-            : new OkObjectResult(responseOpenPeriods);
         }
 
         var responsePeriods = await _processor.ProcessCollectionYear(collectionYear, status);

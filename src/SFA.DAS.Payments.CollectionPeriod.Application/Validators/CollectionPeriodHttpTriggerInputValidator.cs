@@ -12,20 +12,27 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Validators
         public void ValidateCollectionPeriod(short? period);
         public CollectionPeriodStatus? ValidateStatus(string? status);
         public void ValidateCollectionYearAndCollectionPeriod(short? collectionYear, short? period);
+        public void ValidateCollectionYear(short? collectionYear);
     }
 
     public class CollectionPeriodHttpTriggerInputValidator : ICollectionPeriodHttpTriggerInputValidator
     {
         public void ValidateCollectionPeriod(short? period)
         {
-            if (period.HasValue)
+            if (period.HasValue && (period < 1 || period > 14))
             {
-                if (period < 1 || period > 14)
-                {
-                    throw new ArgumentException("Collection period must be between 1 and 14.");
-                }
+                throw new ArgumentException("Collection period must be between 1 and 14.");
             }
         }
+
+        public void ValidateCollectionYear(short? collectionYear)
+        {
+            if (collectionYear.HasValue && (collectionYear < 1000 || collectionYear > 9999))
+            {
+                throw new ArgumentException("Collection Year must be a 4-digit number.");
+            }
+        }
+
         public CollectionPeriodStatus? ValidateStatus(string? status)
         {
             if (string.IsNullOrEmpty(status))
@@ -54,6 +61,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Validators
             }
 
             ValidateCollectionPeriod(period);
+            ValidateCollectionYear(collectionYear);
         }
     }
 }

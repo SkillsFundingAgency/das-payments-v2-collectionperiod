@@ -25,7 +25,7 @@ builder.Services
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
-}); 
+});
 
 builder.Services.AddHttpClient<SLDJobManagementAPIService>(client =>
 {
