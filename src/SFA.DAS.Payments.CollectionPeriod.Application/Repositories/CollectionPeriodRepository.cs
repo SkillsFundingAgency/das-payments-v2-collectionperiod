@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.Application.Repositories;
-using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.Model.Core.Entities;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
@@ -11,7 +10,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
         public Task<IEnumerable<short>> OpenCollectionYears();
         public Task<IEnumerable<CollectionPeriodModel>> CollectionYear(short collectionYear, CollectionPeriodStatus? status);
         public Task<CollectionPeriodModel> CollectionPeriodForCollectionYear(short? collectionYear, short? period);
-        Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
+        public Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
+        public Task<short> GetCurrentCollectionYear();
     }
 
     public class CollectionPeriodRepository : ICollectionPeriodRepository
@@ -108,5 +108,23 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             }
         }
 
+        // Retrieve the current collection year based on the current date and open collection periods
+        // If there are multiple open collection periods, it will return the oldest collection year
+        public async Task<short> GetCurrentCollectionYear()
+        {
+            try
+            {
+                return await _paymentsDataContext.CollectionPeriod
+                    .Where(cp => cp.EndDateTime > DateTime.Today)
+                    .Select(cp => cp.AcademicYear)
+                    .OrderBy(cp => cp)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("SQL Error - CollectionPeriodRepository for GetCurrentCollectionYear. Message {message}", ex.Message);
+                throw;
+            }
+        }
     }
 }
