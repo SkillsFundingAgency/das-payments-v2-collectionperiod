@@ -7,7 +7,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
     public interface ISLDJobManagementAPIService
     {
-        Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(string uptoDateStr);
+        Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear);
     }
 
     public class SLDJobManagementAPIService : ISLDJobManagementAPIService
@@ -21,11 +21,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(string uptoDateStr)
+        public async Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear)
         {           
             try
             {
-                var sldResponse = await _httpClient.GetAsync($"returnperiod/upto/{uptoDateStr}/ILR");
+                var sldResponse = await _httpClient.GetAsync($"?fromCollectionYear={fromCollectionYear}/");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
@@ -37,7 +37,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while calling SLD Job Conext API to get collection periods for date: {uptoDateStr}. Exeption: {ex.Message}");
+                _logger.LogError($"Error occurred while calling SLD Job Context API to get collection periods for fromCollectionYear: {fromCollectionYear}. Exception: {ex.Message}");
                 throw;
             }
             

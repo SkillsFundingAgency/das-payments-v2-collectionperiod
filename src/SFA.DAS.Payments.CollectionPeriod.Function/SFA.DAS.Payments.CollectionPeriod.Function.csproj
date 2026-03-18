@@ -24,12 +24,13 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.17.0" />
-    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-10" />
     <PackageReference Include="SFA.DAS.Payments.PeriodEnd.Messages" Version="0.1.59" />
+    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-28" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Application\SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
+    <ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Infrastructure\SFA.DAS.Payments.CollectionPeriod.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

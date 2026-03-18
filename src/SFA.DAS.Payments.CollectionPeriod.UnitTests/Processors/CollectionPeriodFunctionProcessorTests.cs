@@ -42,7 +42,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
             _mockRepository.Setup(r => r.OpenCollectionYears()).ReturnsAsync(openYears);
             _mockMapper.Setup(m => m.MapToOpenCollectionYearResponseModel(openYears)).Returns(expectedResponse);
 
-            var result = await _sut.ProcessOpenCollectionYears();
+            var result = await _sut.ProcessCollectionYear();
 
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(expectedResponse);
@@ -56,7 +56,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
         {
             _mockRepository.Setup(r => r.OpenCollectionYears()).ReturnsAsync((IEnumerable<short>)null);
 
-            var result = await _sut.ProcessOpenCollectionYears();
+            var result = await _sut.ProcessCollectionYear();
 
             result.Should().BeNull();
             _mockMapper.Verify(m => m.MapToOpenCollectionYearResponseModel(It.IsAny<IEnumerable<short>>()), Times.Never);
@@ -67,7 +67,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
         {
             _mockRepository.Setup(r => r.OpenCollectionYears()).ReturnsAsync(Enumerable.Empty<short>());
 
-            var result = await _sut.ProcessOpenCollectionYears();
+            var result = await _sut.ProcessCollectionYear();
 
             result.Should().BeNull();
             _mockMapper.Verify(m => m.MapToOpenCollectionYearResponseModel(It.IsAny<IEnumerable<short>>()), Times.Never);

@@ -11,11 +11,10 @@ using SFA.DAS.Payments.Model.Core.Entities;
 namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
 {
     [TestFixture]
-//    [Ignore("Ignoring to test DC SLD API integration")]
+    //    [Ignore("Ignoring to test DC SLD API integration")]
     public class SyncCollectionPeriodFunctionProcessorTests
     {
         private Mock<ICollectionPeriodRepository> _repositoryMock;
-        private Mock<ICollectionPeriodRepository> _mockRepository;
         private Mock<ILogger<SyncCollectionPeriodsFunctionProcessor>> _mockLogger;
         private Mock<ISyncCollectionPeriodMapper> _mockMapper;
         private SyncCollectionPeriodsFunctionProcessor _sut;
@@ -44,7 +43,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                 IsOpen = true
             };
 
-            _mockSLDAPI.Setup(s => s.GetCollectionPeriods(DateTime.Today.ToString("yyyy-MM-dd")))
+            _repositoryMock.Setup(r => r.GetCurrentCollectionYear())
+                .ReturnsAsync((short)2425);
+
+            _mockSLDAPI.Setup(s => s.GetCollectionPeriods(2425))
                 .ReturnsAsync(new[] { period });
 
             _repositoryMock.Setup(r => r.UpdateCollectionPeriods(It.IsAny<IEnumerable<CollectionPeriodModel>>()))
@@ -103,16 +105,19 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                 }
             };
 
-            _mockSLDAPI.Setup(s => s.GetCollectionPeriods(DateTime.Today.ToString("yyyy-MM-dd")))
+            _repositoryMock.Setup(r => r.GetCurrentCollectionYear())
+                .ReturnsAsync((short)2425);
+
+            _mockSLDAPI.Setup(s => s.GetCollectionPeriods(2425))
                 .ReturnsAsync(periods);
 
             _repositoryMock.Setup(r => r.UpdateCollectionPeriods(It.IsAny<IEnumerable<CollectionPeriodModel>>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-             _mockMapper.Setup(m => m.MapToPaymentsDBCollectionPeriods(It.IsAny<IEnumerable<SLDJobContextCollectionPeriodModel>>()))
-                .Returns(new[]
-                {
+            _mockMapper.Setup(m => m.MapToPaymentsDBCollectionPeriods(It.IsAny<IEnumerable<SLDJobContextCollectionPeriodModel>>()))
+               .Returns(new[]
+               {
                     new CollectionPeriodModel
                     {
                         AcademicYear = 2425,
@@ -131,7 +136,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                         Period = 4,
                         Status = CollectionPeriodStatus.Closed
                     }
-                });
+               });
 
             await _sut.Process();
 
@@ -143,4 +148,4 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
             )), Times.Once);
         }
     }
-}   
+}
