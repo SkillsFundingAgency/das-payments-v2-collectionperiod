@@ -12,6 +12,7 @@ using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 using SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.Payments.CollectionPeriod.Application.Configuration;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -21,6 +22,12 @@ builder.Services
  .AddApplicationInsightsTelemetryWorkerService()
  .ConfigureFunctionsApplicationInsights();
 
+builder.Configuration.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddEnvironmentVariables();
+builder.Services
+    .AddOptions<CollectionPeriodServiceConfiguration>()
+    .Bind(builder.Configuration)
+    .ValidateOnStart();
 
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
@@ -41,11 +48,6 @@ builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapp
 builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
 builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
 
-//builder.Services.AddHostedService<SetupMessagingInfrastructure>(
-//    serviceProvider => new SetupMessagingInfrastructure(
-//        serviceProvider.GetRequiredService<ILogger<SetupMessagingInfrastructure>>(),
-//        serviceProvider.GetRequiredService<IConfiguration>()
-//    )
-//);
+builder.Services.AddHostedService<SetupMessagingInfrastructure>();
 
 builder.Build().Run();

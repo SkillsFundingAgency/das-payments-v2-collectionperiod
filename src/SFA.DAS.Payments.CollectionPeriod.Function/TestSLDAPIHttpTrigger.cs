@@ -28,7 +28,7 @@ public class TestSLDAPIHttpTrigger
     {
         _logger.LogInformation("TestSLDAPIHttpTrigger function processed a request.");
 
-        var result = await _sLDJobManagementAPIService.GetCollectionPeriods(DateTime.Now.ToString("yyyy-MM-dd"));
+        var result = await _sLDJobManagementAPIService.GetCollectionPeriods(2526);
 
         return new OkObjectResult(result);
     }

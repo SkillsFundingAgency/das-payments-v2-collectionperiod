@@ -28,7 +28,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Processors
 
         public async Task Process()
         {
-            var queryCollectionYear = _collectionPeriodRepository.GetCurrentCollectionYear();
+            var queryCollectionYear = await _collectionPeriodRepository.GetCurrentCollectionYear();
 
             var collectionPeriods = await _sldJobManagementAPIService.GetCollectionPeriods(queryCollectionYear);
 

@@ -25,7 +25,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
             {
                 var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
 
-                if (await adminClient.QueueExistsAsync(queueName, CancellationToken.None).ConfigureAwait(false))
+                if (await adminClient.QueueExistsAsync(queueName, CancellationToken.None))
                 {
                     _logger.LogInformation($"Queue '{queueName}' already exists, skipping queue creation.");
                     return;
@@ -40,7 +40,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
                     MaxSizeInMegabytes = 5120
                 };
 
-                await adminClient.CreateQueueAsync(options, CancellationToken.None).ConfigureAwait(false);
+                await adminClient.CreateQueueAsync(options, CancellationToken.None);
 
                 _logger.LogInformation($"Queue '{queueName}' created.");
             }
@@ -66,7 +66,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
             try
             {
                 var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
-                if (await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None).ConfigureAwait(false))
+                if (await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None))
                 {
                     _logger.LogInformation($"Subscription '{subscriptionName}' on topic '{topicName}' already exists, skipping subscription creation.");
                     return;
@@ -80,7 +80,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
                     ForwardTo = queueName
                 };
 
-                await adminClient.CreateSubscriptionAsync(options, CancellationToken.None).ConfigureAwait(false);
+                await adminClient.CreateSubscriptionAsync(options, CancellationToken.None);
 
                 _logger.LogInformation($"Subscription '{subscriptionName}' on topic '{topicName}' created.");
             }
@@ -105,7 +105,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
             {
                 var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
 
-                if (!await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None).ConfigureAwait(false))
+                if (!await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None))
                 {
                     _logger.LogWarning($"Subscription '{subscriptionName}' on topic '{topicName}' does not exist. Cannot create filter.");
                     return;
@@ -113,7 +113,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
 
                 var ruleName = "PeriodEndStoppedEvent";
 
-                if (await adminClient.RuleExistsAsync(topicName, subscriptionName, ruleName, CancellationToken.None).ConfigureAwait(false))
+                if (await adminClient.RuleExistsAsync(topicName, subscriptionName, ruleName, CancellationToken.None))
                 {
                     _logger.LogInformation($"Rule '{ruleName}' already exists on subscription '{subscriptionName}', skipping rule creation.");
                     return;
@@ -124,7 +124,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
                     Filter = new SqlRuleFilter("[NServiceBus.EnclosedMessageTypes] LIKE '%SFA.DAS.Payments.PeriodEnd.Messages.Events.PeriodEndStoppedEvent%'")
                 };
 
-                await adminClient.CreateRuleAsync(topicName, subscriptionName, ruleOptions, CancellationToken.None).ConfigureAwait(false);
+                await adminClient.CreateRuleAsync(topicName, subscriptionName, ruleOptions, CancellationToken.None);
 
                 _logger.LogInformation($"Rule '{ruleName}' with filter '{ruleOptions.Filter}' created on subscription '{subscriptionName}'.");
             }
