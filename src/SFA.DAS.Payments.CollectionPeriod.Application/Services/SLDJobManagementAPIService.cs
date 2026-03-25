@@ -25,7 +25,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         {           
             try
             {
-                var sldResponse = await _httpClient.GetAsync($"?fromCollectionYear={fromCollectionYear}/");
+                var sldResponse = await _httpClient.GetAsync($"/api/returnperiods/?fromCollectionYear={fromCollectionYear}/");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
