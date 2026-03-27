@@ -1,9 +1,9 @@
+using Microsoft.Azure.Amqp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Payments.Application.Repositories;
-using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.Model.Core.Entities;
 
@@ -203,18 +203,26 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
         {
             var mockData = new[]
             {
-                new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Open },
-                new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Open }
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Open, CompletionDate = null, ReferenceDataValidationDate = null },
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Open, CompletionDate = null, ReferenceDataValidationDate = null }
             };
             _mockContext.CollectionPeriod.AddRange(mockData);
+            short academicYear = 2425;
+            short collectionPeriod = 1;
+            var referenceDataValidationDate = DateTime.Now.AddHours(-12);
+            var completionDate = DateTime.Now;
 
             await _mockContext.SaveChangesAsync();
 
-            await sut.UpdateCollectionPeriodSetCompleted(2425, 1);
+            await sut.UpdateCollectionPeriodSetCompleted(academicYear, collectionPeriod, referenceDataValidationDate, completionDate);
 
             var result = _mockContext.CollectionPeriod.ToList();
 
-            Assert.That(result.First(cp => cp.AcademicYear == 2425 && cp.Period == 1).Status, Is.EqualTo(CollectionPeriodStatus.Completed));
+            var updatedCollectionPeriod = result.First(cp => cp.AcademicYear == academicYear && cp.Period == collectionPeriod);
+
+            Assert.That(updatedCollectionPeriod.Status, Is.EqualTo(CollectionPeriodStatus.Completed));
+            Assert.That(updatedCollectionPeriod.ReferenceDataValidationDate, Is.EqualTo(referenceDataValidationDate));
+            Assert.That(updatedCollectionPeriod.CompletionDate, Is.EqualTo(completionDate));
             Assert.That(result.First(cp => cp.AcademicYear == 2425 && cp.Period == 2).Status, Is.EqualTo(CollectionPeriodStatus.Open));
         }
     }

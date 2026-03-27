@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.17.0" />
     <PackageReference Include="SFA.DAS.Payments.PeriodEnd.Messages" Version="0.1.59" />
-    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-32" />
+    <PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-33" />
   </ItemGroup>
 
   <ItemGroup>
