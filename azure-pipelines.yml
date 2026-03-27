@@ -105,6 +105,21 @@ stages:
       azureSubscription: DCOL-MO-VSTS
       appName: DCOL-MO-CollectionPeriod-WEU
 
+- stage: Deploy_PP
+  dependsOn: Deploy_MO
+  displayName: Deploy to PP
+  variables:
+  - name: tagEnvironment
+    value: Dev/Test
+  - group: DCOL-PP - Environment Key Vault Secrets 
+  jobs:
+  - template: pipeline-templates/job/deploy.yml
+    parameters:
+      pool: DCT Build Pool
+      environmentName: PP
+      azureSubscription: DCOLPPVSTS
+      appName: DCOL-PP-CollectionPeriod-WEU
+
 - stage: Deploy_PD
   dependsOn: Deploy_MO
   displayName: Deploy to PD
