@@ -11,7 +11,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
         public Task<IEnumerable<short>> OpenCollectionYears();
         public Task<IEnumerable<CollectionPeriodModel>> CollectionYear(short collectionYear, CollectionPeriodStatus? status);
         public Task<CollectionPeriodModel> CollectionPeriodForCollectionYear(short? collectionYear, short? period);
-        public Task UpdateCollectionPeriodSetCompleted(short collectionYear, short period);
+        public Task UpdateCollectionPeriodSetCompleted(short collectionYear, short period, DateTime? referenceDataValidationDate, DateTime? completionDate);
         public Task UpdateCollectionPeriods(IEnumerable<CollectionPeriodModel> collectionPeriods);
         public Task<short> GetCurrentCollectionYear();
     }
@@ -128,7 +128,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                 throw;
             }
         }
-        public async Task UpdateCollectionPeriodSetCompleted(short collectionYear, short period)
+        public async Task UpdateCollectionPeriodSetCompleted(short collectionYear, short period, DateTime? referenceDataValidationDate, DateTime? completionDate)
         {
             try
             {
@@ -138,6 +138,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                 if (collectionPeriod != null)
                 {
                     collectionPeriod.Status = CollectionPeriodStatus.Completed;
+                    collectionPeriod.CompletionDate = completionDate;
+                    collectionPeriod.ReferenceDataValidationDate = referenceDataValidationDate;
 
                     _paymentsDataContext.CollectionPeriod.Update(collectionPeriod);
 
