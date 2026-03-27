@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.Function", "SFA.DAS.Payments.CollectionPeriod.Function\SFA.DAS.Payments.CollectionPeriod.Function.csproj", "{30D352F2-AFE6-48C7-BE44-89615EFACF14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.Application", "SFA.DAS.Payments.CollectionPeriod.Application\SFA.DAS.Payments.CollectionPeriod.Application.csproj", "{2C896834-BCA5-4F13-9BF5-90BE10F56264}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.UnitTests", "SFA.DAS.Payments.CollectionPeriod.UnitTests\SFA.DAS.Payments.CollectionPeriod.UnitTests.csproj", "{12F9CCCA-534F-4F9B-BB13-36ED35399BDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Payments.CollectionPeriod.Infrastructure", "SFA.DAS.Payments.CollectionPeriod.Infrastructure\SFA.DAS.Payments.CollectionPeriod.Infrastructure.csproj", "{840E94D4-8805-4314-829C-5642D0166D7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D352F2-AFE6-48C7-BE44-89615EFACF14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C896834-BCA5-4F13-9BF5-90BE10F56264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F9CCCA-534F-4F9B-BB13-36ED35399BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F9CCCA-534F-4F9B-BB13-36ED35399BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F9CCCA-534F-4F9B-BB13-36ED35399BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F9CCCA-534F-4F9B-BB13-36ED35399BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840E94D4-8805-4314-829C-5642D0166D7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840E94D4-8805-4314-829C-5642D0166D7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840E94D4-8805-4314-829C-5642D0166D7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840E94D4-8805-4314-829C-5642D0166D7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F0AA87D-5FDA-48D9-BC78-0592D60F1288}
+	EndGlobalSection
+EndGlobal

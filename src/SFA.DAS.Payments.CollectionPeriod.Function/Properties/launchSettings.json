@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SFA.DAS.Payments.CollectionPeriod.Function": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7069",
+      "launchBrowser": false
+    }
+  }
+}
