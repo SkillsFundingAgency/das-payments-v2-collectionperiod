@@ -10,15 +10,14 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
     {
         private readonly ScenarioContext scenarioContext;
         private readonly MessagingContext messagingContext;
-        private readonly TestSession testSession;
+        private TestSession testSession;
         private Model.Core.CollectionPeriod collectionPeriod;
         private short currentAcademicYear;
 
-        public CollectionPeriodStepDefinitions(ScenarioContext scenarioContext, MessagingContext messagingContext, TestSession testSession)
+        public CollectionPeriodStepDefinitions(ScenarioContext scenarioContext, MessagingContext messagingContext)
         {
             this.scenarioContext = scenarioContext;
-            this.messagingContext = messagingContext;
-            this.testSession = testSession;
+            this.messagingContext = messagingContext;            
         }
 
         protected void SetCurrentCollectionYear()
@@ -27,8 +26,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         }
 
         [BeforeScenario]
-        public void BeforeScenario()
+        public async Task BeforeScenario()
         {
+            testSession = new TestSession();
+            await testSession.DataContext.ClearCollectionPeriodsData();
             SetCurrentCollectionYear();
             Console.WriteLine($"UKPRN : {testSession.Provider.Ukprn}, ULN: {testSession.Learner.Uln}, collection year: {currentAcademicYear}");
         }

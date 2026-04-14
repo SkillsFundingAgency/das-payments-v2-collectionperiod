@@ -35,7 +35,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
                     //    provider = GetProvider();
                     //}
 
-                    dataContext.ClearCollectionPeriodsData();
                     mutex.ReleaseMutex();
                 }
                 else
