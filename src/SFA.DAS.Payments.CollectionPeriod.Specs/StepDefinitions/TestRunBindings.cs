@@ -10,6 +10,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
     {
         public static IEndpointInstance endpoint { get; private set; }
         public static IConfiguration Config { get; private set; }
+        public static HttpClient HttpClient { get; private set; }
 
         [BeforeTestRun]
         public static async Task SetUpMessaging()
@@ -19,7 +20,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
                 .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appSettings.development.json"), true)
                 .Build();
 
-            var endpointConfig = new EndpointConfiguration("sfa-das-payments-requiredpayments-tests-specs");
+            var endpointConfig = new EndpointConfiguration("sfa-das-payments-requiredpayments-specs");
             var conventions = endpointConfig.Conventions();
             conventions.DefiningMessagesAs(type => type.IsMessage());
             endpointConfig.UseSerialization<NewtonsoftJsonSerializer>();

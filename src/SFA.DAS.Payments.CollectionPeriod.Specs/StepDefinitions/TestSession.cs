@@ -7,22 +7,19 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
 {
     public class TestSession
     {
-        public string SessionId { get; }
-        private readonly Random random;
-        public Faker<Course> CourseFaker { get; }
+        public string SessionId { get; } = Guid.NewGuid().ToString();
+        private readonly Random random = new(Guid.NewGuid().GetHashCode());
+        public Faker<Course> CourseFaker { get; } = new();
         public Provider Provider { get; }
         public Learner  Learner { get; }
         public TestSessionDataContext DataContext { get; }
         public TimeSpan TimeToWait => TimeSpan.FromSeconds(10);
         public TimeSpan TimeToPause => TimeSpan.FromSeconds(2);
         public long JobId { get; set; }
+        public HttpClient HttpClient { get; set; } = new();
 
         public TestSession()
         {
-            SessionId = Guid.NewGuid().ToString();
-            random = new Random(Guid.NewGuid().GetHashCode());
-
-            CourseFaker = new Faker<Course>();
             CourseFaker
                 .RuleFor(course => course.AimSeqNumber, faker => faker.Random.Short(1))
                 .RuleFor(course => course.FrameworkCode, faker => faker.Random.Short(1))
@@ -40,6 +37,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             Provider = GenerateProvider();
             Learner = GenerateLearner(Provider.Ukprn);
             JobId = GenerateId();
+            HttpClient.BaseAddress = new Uri(TestRunBindings.Config["CollectionPeriodAPIBaseUrl"]);
         }
 
         public long GenerateId(int maxValue = 1000000)

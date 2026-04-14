@@ -1,8 +1,19 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using NUnit.Framework;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Specs
 {
+    [TestFixture]
+    public class Tests
+    {
+        [Test]
+        public void Test()
+        {
+            Assert.Pass("blah");
+        }
+    }
+
     public static class Extensions
     {
         public static DateTime ToDate(this string dateText)

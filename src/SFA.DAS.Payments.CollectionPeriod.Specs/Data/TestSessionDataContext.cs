@@ -11,6 +11,7 @@ public class TestSessionDataContext : DbContext
 
     public virtual DbSet<Provider> Providers { get; set; }
     public virtual DbSet<PaymentModel> Payment { get; set; }
+    public virtual DbSet<CollectionPeriodModel> CollectionPeriods { get; set; }
 
     public TestSessionDataContext(string connectionString)
     {
@@ -28,6 +29,7 @@ public class TestSessionDataContext : DbContext
         modelBuilder.HasDefaultSchema("Payments2");
         modelBuilder.ApplyConfiguration(new ProviderConfiguration());
         modelBuilder.ApplyConfiguration(new PaymentModelConfiguration());
+        modelBuilder.ApplyConfiguration(new CollectionPeriodModelConfiguration());
     }
 
     public Provider LeastRecentlyUsed() =>

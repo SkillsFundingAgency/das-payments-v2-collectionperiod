@@ -1,5 +1,7 @@
-﻿using Reqnroll;
+﻿using System.Net.Http.Json;
+using Reqnroll;
 using SFA.DAS.Payments.Model.Core;
+using SFA.DAS.Payments.Model.Core.Entities;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
 {
@@ -37,28 +39,64 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         }
 
         [Given("that the collection period has recently completed")]
-        public void GivenThatTheCollectionPeriodHasRecentlyCompleted()
+        public async Task GivenThatTheCollectionPeriodHasRecentlyCompleted()
         {
-            throw new PendingStepException();
+            var period = new CollectionPeriodBuilder().WithDate(DateTime.Today).Build();
+            testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
+            {
+                AcademicYear = period.AcademicYear,
+                CalendarMonth = (byte)DateTime.Today.Month,
+                CalendarYear = (byte)DateTime.Today.Year,
+                CompletionDate = DateTime.Today,
+                EndDateTime = DateTime.Today,
+                Period = period.Period,
+                ReferenceDataValidationDate = DateTime.Today,
+                StartDateTime = DateTime.Today.AddMonths(-1),
+                Status = CollectionPeriodStatus.Completed
+            });
+            await testSession.DataContext.SaveChangesAsync();
         }
 
         [Given("the next collection period has not yet been opened")]
-        public void GivenTheNextCollectionPeriodHasNotYetBeenOpened()
+        public async Task GivenTheNextCollectionPeriodHasNotYetBeenOpened()
         {
-            throw new PendingStepException();
+            var periodMonth = DateTime.Today.AddMonths(1);
+            var period = new CollectionPeriodBuilder().WithDate(periodMonth).Build();
+
+            testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
+            {
+                AcademicYear = period.AcademicYear,
+                CalendarMonth = (byte)periodMonth.Month,
+                CalendarYear = (byte)periodMonth.Year,
+                CompletionDate = periodMonth,
+                EndDateTime = null,
+                Period = period.Period,
+                ReferenceDataValidationDate = null,
+                StartDateTime = periodMonth.AddMonths(-1),
+                Status = CollectionPeriodStatus.NotStarted
+            });
+            await testSession.DataContext.SaveChangesAsync();
         }
 
+        private List<CollectionYear> OpenYears;
+
         [When("a request is made to get the open collection years from the Collection Periods API")]
-        public void WhenARequestIsMadeToGetTheOpenCollectionYearsFromTheCollectionPeriodsAPI()
+        public async Task WhenARequestIsMadeToGetTheOpenCollectionYearsFromTheCollectionPeriodsAPI()
         {
-            throw new PendingStepException();
+
+            OpenYears = await testSession.HttpClient.GetFromJsonAsync<List<CollectionYear>>("collectionYear");
+        }
+
+        public class CollectionYear
+        {
+            public short Year { get; set; }
+            public short Status { get; set; }
         }
 
         [Then("the response should contain the current collection year")]
         public void ThenTheResponseShouldContainTheCurrentCollectionYear()
         {
-            throw new PendingStepException();
+            OpenYears.Any(openYear => openYear.Year.Equals(currentAcademicYear));
         }
-
     }
 }

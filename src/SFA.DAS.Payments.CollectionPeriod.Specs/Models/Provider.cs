@@ -1,8 +1,9 @@
 ﻿
 
+using SFA.DAS.Payments.Model.Core.Entities;
+
 namespace SFA.DAS.Payments.CollectionPeriod.Specs.Models
 {
-
     public class Provider
     {
         public int Ukprn { get; private set; }
