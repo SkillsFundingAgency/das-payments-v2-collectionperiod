@@ -38,6 +38,27 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         {
         }
 
+
+        [Given("that the collection period has opened recently")]
+        public async Task GivenThatTheCollectionPeriodHasOpenedRecently()
+        {
+            var period = new CollectionPeriodBuilder().WithDate(DateTime.Today).Build();
+            testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
+            {
+                AcademicYear = period.AcademicYear,
+                CalendarMonth = (byte)DateTime.Today.Month,
+                CalendarYear = (byte)DateTime.Today.Year,
+                CompletionDate = DateTime.Today,
+                EndDateTime = null,
+                Period = period.Period,
+                ReferenceDataValidationDate = null,
+                StartDateTime = DateTime.Today,
+                Status = CollectionPeriodStatus.Open
+            });
+            await testSession.DataContext.SaveChangesAsync();
+        }
+
+
         [Given("that the collection period has recently completed")]
         public async Task GivenThatTheCollectionPeriodHasRecentlyCompleted()
         {
@@ -78,6 +99,50 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             await testSession.DataContext.SaveChangesAsync();
         }
 
+        [Given("that the collection period R01 is currently open")]
+        public async Task GivenThatTheCollectionPeriodRIsCurrentlyOpen()
+        {
+            var periodMonth = new DateTime(DateTime.Today.Year,8,1);
+            var period = new CollectionPeriodBuilder().WithDate(periodMonth).Build();
+
+            testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
+            {
+                AcademicYear = period.AcademicYear,
+                CalendarMonth = 8,
+                CalendarYear = (byte)periodMonth.Year,
+                CompletionDate = periodMonth.AddMonths(1),
+                EndDateTime = null,
+                Period = 1,
+                ReferenceDataValidationDate = null,
+                StartDateTime = periodMonth,
+                Status = CollectionPeriodStatus.Open
+            });
+
+            await testSession.DataContext.SaveChangesAsync();
+        }
+
+        [Given("collection period R13 is also open")]
+        public async Task GivenCollectionPeriodRIsAlsoOpen()
+        {
+            var periodMonth = new DateTime(DateTime.Today.Year, 8, 1);
+            var period = new CollectionPeriodBuilder().WithDate(periodMonth).Build();
+
+            testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
+            {
+                AcademicYear = (short)(period.AcademicYear - 101),
+                CalendarMonth = 8,
+                CalendarYear = (byte)periodMonth.Year,
+                CompletionDate = periodMonth.AddMonths(1),
+                EndDateTime = null,
+                Period = 13,
+                ReferenceDataValidationDate = null,
+                StartDateTime = periodMonth,
+                Status = CollectionPeriodStatus.Open
+            });
+
+            await testSession.DataContext.SaveChangesAsync();
+        }
+
         private List<CollectionYear> OpenYears;
 
         [When("a request is made to get the open collection years from the Collection Periods API")]
@@ -90,7 +155,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         public class CollectionYear
         {
             public short Year { get; set; }
-            public short Status { get; set; }
+            public string Status { get; set; }
         }
 
         [Then("the response should contain the current collection year")]
@@ -98,5 +163,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         {
             OpenYears.Any(openYear => openYear.Year.Equals(currentAcademicYear));
         }
+
+        [Then("the response should contain the both open collection years")]
+        public void ThenTheResponseShouldContainTheBothOpenCollectionYears()
+        {
+            OpenYears.All(openYear => openYear.Year.Equals(currentAcademicYear) || openYear.Year.Equals(currentAcademicYear - 101));
+        }
+
     }
 }
