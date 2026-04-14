@@ -130,17 +130,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 7
-await testRunner.GivenAsync("that the collection period has recently completed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+ await testRunner.GivenAsync("that the collection period has recently completed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 8
-await testRunner.ButAsync("the next collection period has not yet been opened", ((string)(null)), ((global::Reqnroll.Table)(null)), "But ");
+ await testRunner.ButAsync("the next collection period has not yet been opened", ((string)(null)), ((global::Reqnroll.Table)(null)), "But ");
 #line hidden
 #line 9
-await testRunner.WhenAsync("a request is made to get the open collection years from the Collection Periods AP" +
+ await testRunner.WhenAsync("a request is made to get the open collection years from the Collection Periods AP" +
                         "I", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 10
-await testRunner.ThenAsync("the response should contain the current collection year", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the response should contain the current collection year", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
