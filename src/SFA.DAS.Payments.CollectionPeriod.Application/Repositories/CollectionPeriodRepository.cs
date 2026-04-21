@@ -54,7 +54,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
             try
             {
                 return await _paymentsDataContext.CollectionPeriod
-                    .Where(cp => cp.Status == CollectionPeriodStatus.Open)
+                    .Where(cp => cp.Status == CollectionPeriodStatus.Open || cp.Status == CollectionPeriodStatus.NotStarted)
                     .Select(cp => cp.AcademicYear)
                     .Distinct()
                     .ToListAsync();

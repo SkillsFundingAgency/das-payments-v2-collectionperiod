@@ -357,3 +357,4 @@ src/SFA.DAS.Forecasting.Web/Web.Debug.config
 *.v3.ncrunchsolution
 *.v3.ncrunchproject
 appSettings.development.json
+/src/SFA.DAS.Payments.CollectionPeriod.Specs/appSettings.json
