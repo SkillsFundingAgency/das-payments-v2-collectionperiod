@@ -11,10 +11,16 @@ Add the following at the root of the function app in a file labelled `local.sett
     "PaymentsConnectionString": "",
     "SLDJobManagementAPIEndpoint": "",
     "SyncCollectionPeriodsSchedule": "" //CRON format eg. "*/2 * * * *"
-    "QueueName": ""
+    "QueueName": "",
+    "CollectionPeriodQueueName": "",
+    "PaymentsTopicName": "",
+    "CollectionPeriodSubscriptionName": "",
   },
   "ApplicationInsights": {
     "ConnectionString": ""
+  },
+  "ConnectionStrings": {
+    "ServiceBusConnectionString": ""
   }
 }
 
