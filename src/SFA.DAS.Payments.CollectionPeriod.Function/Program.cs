@@ -34,6 +34,11 @@ builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
 });
 
+builder.Services.AddDbContext<IPeriodEndDataContext, PeriodEndDataContext>(options =>
+{
+    options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
+});
+
 builder.Services.AddHttpClient<SLDJobManagementAPIService>(client =>
 {
     client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("SLDJobManagementAPIEndpoint"));
@@ -48,6 +53,7 @@ builder.Services.AddScoped<ISyncCollectionPeriodMapper, SyncCollectionPeriodMapp
 builder.Services.AddScoped<ISyncCollectionPeriodsProcessor, SyncCollectionPeriodsFunctionProcessor>();
 builder.Services.AddScoped<ISLDJobManagementAPIService, SLDJobManagementAPIService>();
 builder.Services.AddScoped<IPeriodEndStoppedEventHandler, PeriodEndStoppedEventHandler>();
+builder.Services.AddScoped<IPeriodEndRepository, PeriodEndRepository>();
 
 builder.Services.AddHostedService<SetupMessagingInfrastructure>();
 
