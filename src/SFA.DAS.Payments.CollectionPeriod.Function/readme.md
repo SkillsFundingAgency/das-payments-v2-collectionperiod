@@ -15,6 +15,10 @@ Add the following at the root of the function app in a file labelled `local.sett
     "CollectionPeriodQueueName": "",
     "PaymentsTopicName": "",
     "CollectionPeriodSubscriptionName": "",
+    "TenantId": "",
+    "ClientId": "",
+    "ClientSecret": "",
+    "Audience": ""
   },
   "ApplicationInsights": {
     "ConnectionString": ""
