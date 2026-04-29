@@ -6,6 +6,14 @@
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Maping\**" />
+	  <Compile Remove="Services\**" />
+	  <EmbeddedResource Remove="Maping\**" />
+	  <EmbeddedResource Remove="Services\**" />
+	  <None Remove="Maping\**" />
+	  <None Remove="Services\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="NUnit" Version="3.14.0" />
@@ -19,10 +27,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="../SFA.DAS.Payments.CollectionPeriod.Application/SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Maping\" />
-	  <Folder Include="Services\" />
+		<ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Infrastructure\SFA.DAS.Payments.CollectionPeriod.Infrastructure.csproj" />
 	</ItemGroup>
 </Project>
 		

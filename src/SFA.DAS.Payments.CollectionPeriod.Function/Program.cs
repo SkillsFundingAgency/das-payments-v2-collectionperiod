@@ -12,7 +12,7 @@ using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Mappers;
 using SFA.DAS.Payments.CollectionPeriod.Application.Validators;
 using SFA.DAS.Payments.CollectionPeriod.Application.Handlers;
-using SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus;
+using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 

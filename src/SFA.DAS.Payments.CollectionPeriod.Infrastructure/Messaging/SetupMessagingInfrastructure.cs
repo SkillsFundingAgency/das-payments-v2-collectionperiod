@@ -1,12 +1,12 @@
-﻿using Azure;
+﻿using System.Net;
+using Azure;
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
-namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
+namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
 {
     public class SetupMessagingInfrastructure : IHostedService
     {
@@ -138,9 +138,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.ServiceBus
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             var serviceBusConnectionString = _configuration.GetConnectionString("ServiceBusConnectionString");
-            var queueName = _configuration.GetConnectionString("CollectionPeriodQueueName");
-            var topicName = _configuration.GetConnectionString("PaymentsTopicName");
-            var subscriptionName = _configuration.GetConnectionString("CollectionPeriodSubscriptionName");
+            var queueName = _configuration["CollectionPeriodQueueName"];
+            var topicName = _configuration["PaymentsTopicName"];
+            var subscriptionName = _configuration["CollectionPeriodSubscriptionName"];
 
             if (string.IsNullOrEmpty(serviceBusConnectionString) ||
                 string.IsNullOrEmpty(queueName) ||
