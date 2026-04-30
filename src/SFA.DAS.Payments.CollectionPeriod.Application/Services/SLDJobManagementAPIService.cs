@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
-using System.Net.Http.Json;
-using Azure.Identity;
-using Microsoft.Extensions.Configuration;
 using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
     public interface ISldJobManagementApiService
     {
         Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear);
-        HttpClient CreateAadHttpClient();
+        Task<HttpClient> CreateAadHttpClient();
     }
 
     public class SldJobManagementApiService : ISldJobManagementApiService
@@ -30,7 +30,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         {           
             try
             {
-                var httpClient = CreateAadHttpClient();
+                var httpClient = await CreateAadHttpClient();
 
                 var sldResponse = await httpClient.GetAsync($"/api/returnperiods/?fromCollectionYear={fromCollectionYear}/");
 
@@ -49,16 +49,20 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             }
         }
 
-        public HttpClient CreateAadHttpClient()
+        public async Task<HttpClient> CreateAadHttpClient()
         {
-            var azureAdConfig = _azureAdInfrastructure.GetAzureAdConfig();
+            var credential = _azureAdInfrastructure.GetAzureAdConfig();
+            var token = await _azureAdInfrastructure.GetAzureAdToken(credential);
 
-            //TODO: Add call to get token using azureAdConfig.
+            var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(_config["SLDJobManagementAPIEndpoint"])
+            };
 
-            //Return HttpClient with token in header for authentication to SLD Job Context API.
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
 
-            // Add call 
-            throw new NotImplementedException();
+            return httpClient;
         }
     }
 }

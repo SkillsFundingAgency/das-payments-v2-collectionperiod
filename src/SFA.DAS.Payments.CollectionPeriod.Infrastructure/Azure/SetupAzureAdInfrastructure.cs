@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,7 +8,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure
     public interface ISetupAzureAdInfrastructure
     {
         ClientSecretCredential GetAzureAdConfig();
-        string GetAzureAdToken(ClientSecretCredential clientSecret);
+        Task<string> GetAzureAdToken(TokenCredential clientSecret);
     }
 
     public class SetupAzureAdInfrastructure : ISetupAzureAdInfrastructure
@@ -46,9 +42,18 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure
             );
         }
 
-        public string GetAzureAdToken(ClientSecretCredential clientSecret)
+        public async Task<string> GetAzureAdToken(TokenCredential credential)
         {
-            throw new NotImplementedException();
+            var scope = _config["Scope"];
+
+            if (string.IsNullOrEmpty(scope))
+                throw new ArgumentException("Scope is missing");
+
+            var tokenRequestContext = new TokenRequestContext(new[] { scope });
+
+            var token = await credential.GetTokenAsync(tokenRequestContext, CancellationToken.None);
+
+            return token.Token;
         }
     }
 }
