@@ -51,18 +51,35 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
         public async Task<HttpClient> CreateAadHttpClient()
         {
-            var credential = _azureAdInfrastructure.GetAzureAdConfig();
-            var token = await _azureAdInfrastructure.GetAzureAdToken(credential);
-
-            var httpClient = new HttpClient
+            try
             {
-                BaseAddress = new Uri(_config["SLDJobManagementAPIEndpoint"])
-            };
+                var credential = _azureAdInfrastructure.GetAzureAdConfig();
+                var token = await _azureAdInfrastructure.GetAzureAdToken(credential);
 
-            httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+                var endpoint = _config["SLDJobManagementAPIEndpoint"];
+                
+                if(string.IsNullOrEmpty(endpoint))
+                {
+                    throw new Exception("SLD Job Management API endpoint is not configured.");
+                }
 
-            return httpClient;
+                var httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri(endpoint)
+                };
+
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", token);
+
+                return httpClient;
+
+            } 
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occurred while creating Azure AD authenticated HttpClient. Exception: {ex.Message}");
+                throw;
+            }
+
         }
     }
 }
