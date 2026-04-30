@@ -15,8 +15,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
     public class SldJobManagementApiService : ISldJobManagementApiService
     {
-        private IConfiguration _config;
-        private ISetupAzureAdInfrastructure _azureAdInfrastructure;
+        private readonly IConfiguration _config;
+        private readonly ISetupAzureAdInfrastructure _azureAdInfrastructure;
         private readonly ILogger<SldJobManagementApiService> _logger;
 
         public SldJobManagementApiService(IConfiguration config, ISetupAzureAdInfrastructure azureAdInfrastructure, ILogger<SldJobManagementApiService> logger)

@@ -9,9 +9,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.Function;
 public class TestSLDAPIHttpTrigger
 {
     private readonly ILogger<TestSLDAPIHttpTrigger> _logger;
-    private readonly SldJobManagementApiService _sLDJobManagementAPIService;
+    private readonly ISldJobManagementApiService _sLDJobManagementAPIService;
 
-    public TestSLDAPIHttpTrigger(ILogger<TestSLDAPIHttpTrigger> logger, SldJobManagementApiService sLDJobManagementAPIService)
+    public TestSLDAPIHttpTrigger(ILogger<TestSLDAPIHttpTrigger> logger, ISldJobManagementApiService sLDJobManagementAPIService)
     {
         _logger = logger;
         _sLDJobManagementAPIService = sLDJobManagementAPIService;
