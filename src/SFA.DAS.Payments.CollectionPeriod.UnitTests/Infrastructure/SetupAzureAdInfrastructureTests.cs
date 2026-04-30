@@ -15,12 +15,17 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Infrastructure
         private IConfiguration _configuration;
         private ISetupAzureAdInfrastructure _sut;
         private Mock<ILogger<SetupAzureAdInfrastructure>> _loggerMock;
+        private Mock<ClientSecretCredential> _clientSecretCredentialMock;
 
 
         [SetUp]
         public void Setup()
         {
             _loggerMock = new Mock<ILogger<SetupAzureAdInfrastructure>>();
+            _clientSecretCredentialMock = new Mock<ClientSecretCredential>();
+
+            _clientSecretCredentialMock.Setup(x => x.GetTokenAsync(It.IsAny<TokenRequestContext>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new AccessToken("test-token", DateTimeOffset.UtcNow.AddHours(1)));
 
             // Set up in-memory configuration for testing
             var inMemorySettings = new Dictionary<string, string>
@@ -29,7 +34,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Infrastructure
                 { "ClientId", "clientId" },
                 { "ClientSecret", "clientSecret" },
                 { "Audience", "audience" },
-                { "Scope", "api://test-api/.default"}
             };
             _configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
@@ -73,55 +77,33 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Infrastructure
         }
 
         [Test]
-        public void GetAzureAdToken_ShouldThrow_WhenScopeMissing()
+        public void GetAzureAdToken_ShouldThrow_WhenAudienceMissing()
         {
             var config = new ConfigurationBuilder().Build();
             var sut = new SetupAzureAdInfrastructure(_loggerMock.Object, config);
 
-            var fakeCredential = new FakeTokenCredential("token");
-
             var ex = Assert.ThrowsAsync<ArgumentException>(async () =>
-                await sut.GetAzureAdToken(fakeCredential));
+                await sut.GetAzureAdToken(_clientSecretCredentialMock.Object));
         }
 
         [Test]
         public void GetAzureAdToken_ShouldThrow_WhenCredentialFails()
         {
-            var mockCredential = new Mock<TokenCredential>();
-
-            mockCredential
+            _clientSecretCredentialMock
                 .Setup(x => x.GetTokenAsync(It.IsAny<TokenRequestContext>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("Auth failed"));
 
             var ex = Assert.ThrowsAsync<Exception>(async () =>
-                await _sut.GetAzureAdToken(mockCredential.Object));
+                await _sut.GetAzureAdToken(_clientSecretCredentialMock.Object));
         }
 
         [Test]
         public async Task GetAzureAdToken_ReturnsToken_WhenCredentialIsValid()
         {
-            var fakeCredential = new FakeTokenCredential("test-token");
-
-            var result = await _sut.GetAzureAdToken(fakeCredential);
+            var result = await _sut.GetAzureAdToken(_clientSecretCredentialMock.Object);
 
             Assert.AreEqual("test-token", result);
         }
                 
-    }
-
-    public class FakeTokenCredential : TokenCredential
-    {
-        private readonly AccessToken _token;
-
-        public FakeTokenCredential(string token)
-        {
-            _token = new AccessToken(token, DateTimeOffset.UtcNow.AddHours(1));
-        }
-
-        public override AccessToken GetToken(TokenRequestContext requestContext, CancellationToken cancellationToken)
-            => _token;
-
-        public override ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken)
-            => new ValueTask<AccessToken>(_token);
     }
 }

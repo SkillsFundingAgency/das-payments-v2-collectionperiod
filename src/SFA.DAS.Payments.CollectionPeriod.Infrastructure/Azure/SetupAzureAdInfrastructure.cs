@@ -8,7 +8,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure
     public interface ISetupAzureAdInfrastructure
     {
         ClientSecretCredential GetAzureAdConfig();
-        Task<string> GetAzureAdToken(TokenCredential clientSecret);
+        Task<string> GetAzureAdToken(ClientSecretCredential clientSecret);
     }
 
     public class SetupAzureAdInfrastructure : ISetupAzureAdInfrastructure
@@ -37,19 +37,19 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure
             return new ClientSecretCredential(
                 tenantId, clientId, clientSecret, new TokenCredentialOptions
                 {
-                    AuthorityHost = AzureAuthorityHosts.AzurePublicCloud
+                    AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
                 }
             );
         }
 
-        public async Task<string> GetAzureAdToken(TokenCredential credential)
+        public async Task<string> GetAzureAdToken(ClientSecretCredential credential)
         {
-            var scope = _config["Scope"];
+            var audience = _config["Audience"];
 
-            if (string.IsNullOrEmpty(scope))
-                throw new ArgumentException("Scope is missing");
+            if (string.IsNullOrEmpty(audience))
+                throw new ArgumentException("Audience is missing");
 
-            var tokenRequestContext = new TokenRequestContext(new[] { scope });
+            var tokenRequestContext = new TokenRequestContext([$"{audience}/.default"]);
 
             var token = await credential.GetTokenAsync(tokenRequestContext, CancellationToken.None);
 

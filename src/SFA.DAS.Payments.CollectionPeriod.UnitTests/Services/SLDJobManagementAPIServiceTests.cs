@@ -56,7 +56,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
         {
             // Arrange
             _loggerMock = new Mock<ILogger<SldJobManagementApiService>>();
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<TokenCredential>())).Throws(new Exception("Azure AD config error"));
+            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<ClientSecretCredential>())).Throws(new Exception("Azure AD config error"));
             _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
 
             // Act & Assert
@@ -86,7 +86,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
             var endpoint = "https://sldjobmanagementapiendpoint";
             var token = "test_token";
             _azureAdInfrastructureMock.Setup(x => x.GetAzureAdConfig()).Returns(new ClientSecretCredential("tenantId", "clientId", "clientSecret"));
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<TokenCredential>())).ReturnsAsync(token);
+            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<ClientSecretCredential>())).ReturnsAsync(token);
             var inMemorySettings = new Dictionary<string, string>
             {
                 { "TenantId", "tenantId" },
