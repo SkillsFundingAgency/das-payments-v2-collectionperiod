@@ -32,7 +32,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
             {
                 var httpClient = await CreateAadHttpClient();
 
-                var sldResponse = await httpClient.GetAsync($"/api/returnperiods/?fromCollectionYear={fromCollectionYear}/");
+                var sldResponse = await httpClient.GetAsync($"returnperiods/?fromCollectionYear={fromCollectionYear}");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
