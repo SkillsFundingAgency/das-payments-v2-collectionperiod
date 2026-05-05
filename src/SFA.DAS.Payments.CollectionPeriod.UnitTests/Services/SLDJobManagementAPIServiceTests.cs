@@ -1,13 +1,14 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
 {
@@ -17,99 +18,85 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
         private IConfiguration _configuration;
         private ISldJobManagementApiService _sut;
         private Mock<ILogger<SldJobManagementApiService>> _loggerMock;
-        private Mock<ISetupAzureAdInfrastructure> _azureAdInfrastructureMock;
 
         [SetUp]
         public void Setup()
         {
             _loggerMock = new Mock<ILogger<SldJobManagementApiService>>();
-            _azureAdInfrastructureMock = new Mock<ISetupAzureAdInfrastructure>();
+        }
 
-            // Set up in-memory configuration for testing
-            var inMemorySettings = new Dictionary<string, string>
+        [Test]
+        public async Task GetCollectionPeriods_ShouldReturn_Data_WhenApiReturnsSuccess()
+        {
+            // Arrange
+            var expected = new List<SLDJobContextCollectionPeriodModel>
             {
-                { "TenantId", "tenantId" },
-                { "ClientId", "clientId" },
-                { "ClientSecret", "clientSecret" },
-                { "Audience", "audience" },
+                new SLDJobContextCollectionPeriodModel()
             };
-            _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
-                .Build();
-            _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
-        }
-        [Test]
-        public async Task CreateAadHttpClient_ShouldThrow_If_GetAzureAdConfig_Error()
-        {
-            // Arrange
-            _loggerMock = new Mock<ILogger<SldJobManagementApiService>>();
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdConfig()).Throws(new Exception("Azure AD config error"));
-            _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
 
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(async () => await _sut.CreateAadHttpClient());
-            ex.Message.Should().Be("Azure AD config error");
-        }
+            var handler = new MockHttpMessageHandler(expected, HttpStatusCode.OK);
 
-        [Test]
-        public async Task CreateAadHttpClient_ShouldThrow_If_TokenCredential_Error()
-        {
-            // Arrange
-            _loggerMock = new Mock<ILogger<SldJobManagementApiService>>();
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<ClientSecretCredential>())).Throws(new Exception("Azure AD config error"));
-            _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
-
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(async () => await _sut.CreateAadHttpClient());
-            ex.Message.Should().Be("Azure AD config error");
-        }
-
-        [Test]
-        public async Task CreateAadHttpClient_ShouldThrow_If_SLDJobManagementAPIEndpoint_NotConfigured()
-        {
-            // Arrange
-            var inMemorySettings = new Dictionary<string, string>();
-            _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
-                .Build();
-            _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
-
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(async () => await _sut.CreateAadHttpClient());
-            ex.Message.Should().Be("SLD Job Management API endpoint is not configured.");
-        }
-
-        [Test]
-        public async Task CreateAadHttpClient_Should_Return_HttpClient()
-        {
-            // Arrange
-            var endpoint = "https://sldjobmanagementapiendpoint";
-            var token = "test_token";
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdConfig()).Returns(new ClientSecretCredential("tenantId", "clientId", "clientSecret"));
-            _azureAdInfrastructureMock.Setup(x => x.GetAzureAdToken(It.IsAny<ClientSecretCredential>())).ReturnsAsync(token);
-            var inMemorySettings = new Dictionary<string, string>
+            var httpClient = new HttpClient(handler)
             {
-                { "TenantId", "tenantId" },
-                { "ClientId", "clientId" },
-                { "ClientSecret", "clientSecret" },
-                { "Audience", "audience" },
-                { "SLDJobManagementAPIEndpoint", endpoint }
+                BaseAddress = new Uri("https://test/api/")
             };
-            _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
-                .Build();
-            _sut = new SldJobManagementApiService(_configuration, _azureAdInfrastructureMock.Object, _loggerMock.Object);
 
-            // Act & Assert
-            var httpClient = await _sut.CreateAadHttpClient();
-            httpClient.Should().NotBeNull();
-            httpClient.BaseAddress.Should().NotBeNull();
-            httpClient.BaseAddress.ToString().Should().Be(endpoint +"/");
-            httpClient.DefaultRequestHeaders.Authorization.Should().NotBeNull();
-            httpClient.DefaultRequestHeaders.Authorization.Scheme.Should().Be("Bearer");
-            httpClient.DefaultRequestHeaders.Authorization.Parameter.Should().Be(token);
+            var sut = new SldJobManagementApiService(_configuration, _loggerMock.Object, httpClient);
 
+            // Act
+            var result = await sut.GetCollectionPeriods(2425);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
         }
 
+        [Test]
+        public async Task GetCollectionPeriods_ShouldReturnEmpty_WhenApiFails()
+        {
+            // Arrange
+            var handler = new MockHttpMessageHandler(null, HttpStatusCode.BadRequest);
+
+            var httpClient = new HttpClient(handler)
+            {
+                BaseAddress = new Uri("https://test/api/")
+            };
+
+            var sut = new SldJobManagementApiService(_configuration, _loggerMock.Object, httpClient);
+
+            // Act
+            var result = await sut.GetCollectionPeriods(2425);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+    }
+
+    public class MockHttpMessageHandler : HttpMessageHandler
+    {
+        private readonly object _response;
+        private readonly HttpStatusCode _statusCode;
+
+        public MockHttpMessageHandler(object response, HttpStatusCode statusCode)
+        {
+            _response = response;
+            _statusCode = statusCode;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var message = new HttpResponseMessage
+            {
+                StatusCode = _statusCode
+            };
+
+            if (_response != null)
+            {
+                message.Content = JsonContent.Create(_response);
+            }
+
+            return Task.FromResult(message);
+        }
     }
 }
