@@ -25,6 +25,13 @@ Add the following at the root of the function app in a file labelled `local.sett
   },
   "ConnectionStrings": {
     "ServiceBusConnectionString": ""
+  },
+  "AzureAd": {
+    "Instance": "",
+    "TenantId": "",
+    "ClientId": "",
+    "ClientSecret": "",
+    "Audience": ""
   }
 }
 
