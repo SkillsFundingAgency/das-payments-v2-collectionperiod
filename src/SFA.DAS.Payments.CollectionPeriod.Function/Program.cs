@@ -1,10 +1,10 @@
-﻿using Azure.Identity;
-using Microsoft.Azure.Functions.Worker;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 using SFA.DAS.Payments.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Configuration;
 using SFA.DAS.Payments.CollectionPeriod.Application.Handlers;
@@ -13,7 +13,6 @@ using SFA.DAS.Payments.CollectionPeriod.Application.Processors;
 using SFA.DAS.Payments.CollectionPeriod.Application.Repositories;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
 using SFA.DAS.Payments.CollectionPeriod.Application.Validators;
-using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure;
 using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging;
 
 var builder = FunctionsApplication.CreateBuilder(args);
@@ -31,6 +30,10 @@ builder.Services
     .Bind(builder.Configuration)
     .ValidateOnStart();
 
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
+    .EnableTokenAcquisitionToCallDownstreamApi()
+    .AddInMemoryTokenCaches();
+
 builder.Services.AddDbContext<IPaymentsDataContext, PaymentsDataContext>(options =>
 {
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
@@ -41,34 +44,21 @@ builder.Services.AddDbContext<IPeriodEndDataContext, PeriodEndDataContext>(optio
     options.UseSqlServer(Environment.GetEnvironmentVariable("PaymentsConnectionString"));
 });
 
-builder.Services.AddSingleton(sp =>
-{
-    var configuration = sp.GetRequiredService<IConfiguration>();
-
-    var tenantId = configuration["Values:TenantId"];
-    var clientId = configuration["Values:ClientId"];
-    var clientSecret = configuration["Values:ClientSecret"];
-
-    if (string.IsNullOrEmpty(tenantId) || string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
-        throw new Exception("Azure AD configuration missing");
-
-    return new ClientSecretCredential(tenantId, clientId, clientSecret);
-});
-
-builder.Services.AddTransient<AzureAdTokenHandler>();
-
 builder.Services.AddHttpClient<ISldJobManagementApiService, SldJobManagementApiService>((sp, client) =>
 {
     var endpoint = Environment.GetEnvironmentVariable("SLDJobManagementAPIEndpoint");
 
     if (string.IsNullOrEmpty(endpoint))
+    {
         throw new Exception("SLDJobManagementAPIEndpoint is missing");
+    }
 
     client.BaseAddress = new Uri(endpoint);
-})
-.AddHttpMessageHandler<AzureAdTokenHandler>();
-
-
+}).AddMicrosoftIdentityMessageHandler(options =>
+{
+    options.Scopes = [$"{builder.Configuration["AzureAd:Audience"]}/.default"];
+    options.RequestAppToken = true;
+}); 
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
 builder.Services.AddScoped<ICollectionPeriodRepository, CollectionPeriodRepository>();

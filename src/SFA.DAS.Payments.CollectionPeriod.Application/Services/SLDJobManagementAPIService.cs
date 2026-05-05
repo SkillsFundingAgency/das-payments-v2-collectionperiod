@@ -12,17 +12,14 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
     public class SldJobManagementApiService : ISldJobManagementApiService
     {
-        private readonly IConfiguration _config;
         private readonly ILogger<SldJobManagementApiService> _logger;
         private readonly HttpClient _httpClient;
 
 
-        public SldJobManagementApiService(IConfiguration config, ILogger<SldJobManagementApiService> logger, HttpClient httpClient)
+        public SldJobManagementApiService(ILogger<SldJobManagementApiService> logger, HttpClient httpClient)
         {
-            _config = config;
             _logger = logger;
             _httpClient = httpClient;
-
         }
 
         public async Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear)
@@ -33,6 +30,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
+                    _logger.LogInformation($"API call was successful. Retrieved collection periods for from CollectionYear: {fromCollectionYear}");
                     var result = await sldResponse.Content.ReadFromJsonAsync<IEnumerable<SLDJobContextCollectionPeriodModel>>();
                     return result ?? Enumerable.Empty<SLDJobContextCollectionPeriodModel>();
                 }

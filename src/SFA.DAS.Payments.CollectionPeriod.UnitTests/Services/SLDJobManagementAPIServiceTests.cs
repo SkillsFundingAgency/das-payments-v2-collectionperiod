@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using SFA.DAS.Payments.CollectionPeriod.Application.Services;
-using SFA.DAS.Payments.CollectionPeriod.Infrastructure.Azure;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -41,7 +40,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
                 BaseAddress = new Uri("https://test/api/")
             };
 
-            var sut = new SldJobManagementApiService(_configuration, _loggerMock.Object, httpClient);
+            var sut = new SldJobManagementApiService(_loggerMock.Object, httpClient);
 
             // Act
             var result = await sut.GetCollectionPeriods(2425);
@@ -62,7 +61,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
                 BaseAddress = new Uri("https://test/api/")
             };
 
-            var sut = new SldJobManagementApiService(_configuration, _loggerMock.Object, httpClient);
+            var sut = new SldJobManagementApiService(_loggerMock.Object, httpClient);
 
             // Act
             var result = await sut.GetCollectionPeriods(2425);
