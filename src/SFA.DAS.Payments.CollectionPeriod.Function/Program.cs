@@ -30,7 +30,7 @@ builder.Services
     .Bind(builder.Configuration)
     .ValidateOnStart();
 
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration)
     .EnableTokenAcquisitionToCallDownstreamApi()
     .AddInMemoryTokenCaches();
 
