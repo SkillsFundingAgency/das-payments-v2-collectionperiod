@@ -19,3 +19,15 @@ Add the following at the root of the function app in a file labelled `local.sett
 }
 
 ```
+
+To run the Acceptance Tests locally, you will also need to add the following at the root of the `SFA.DAS.Payments.CollectionPeriod.Specs` project in a file labelled `appSettings.json`
+```
+{
+  "ConnectionStrings": {
+    "StorageConnectionString": "UseDevelopmentStorage=true",
+    "PaymentsConnectionString": "",
+    "ServiceBusConnectionString": ""
+  },
+  "CollectionPeriodAPIBaseUrl": "http://localhost:7069/api/"
+}
+```

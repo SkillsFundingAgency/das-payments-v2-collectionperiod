@@ -348,3 +348,13 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# Settings
+*/local.settings.json
+*/App.Debug.config
+src/SFA.DAS.Forecasting.Web/Web.Debug.config
+*.v3.ncrunchsolution
+*.v3.ncrunchproject
+appSettings.development.json
+/src/SFA.DAS.Payments.CollectionPeriod.Specs/appSettings.*.json
