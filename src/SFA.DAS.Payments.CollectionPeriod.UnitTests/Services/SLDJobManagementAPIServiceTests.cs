@@ -15,13 +15,13 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
     public class SLDJobManagementAPIServiceTests
     {
         private IConfiguration _configuration;
-        private ISldJobManagementApiService _sut;
-        private Mock<ILogger<SldJobManagementApiService>> _loggerMock;
+        private ISLDJobManagementAPIService _sut;
+        private Mock<ILogger<SLDJobManagementAPIService>> _loggerMock;
 
         [SetUp]
         public void Setup()
         {
-            _loggerMock = new Mock<ILogger<SldJobManagementApiService>>();
+            _loggerMock = new Mock<ILogger<SLDJobManagementAPIService>>();
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
                 BaseAddress = new Uri("https://test/api/")
             };
 
-            var sut = new SldJobManagementApiService(_loggerMock.Object, httpClient);
+            var sut = new SLDJobManagementAPIService(httpClient, _loggerMock.Object);
 
             // Act
             var result = await sut.GetCollectionPeriods(2425);
@@ -61,7 +61,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Services
                 BaseAddress = new Uri("https://test/api/")
             };
 
-            var sut = new SldJobManagementApiService(_loggerMock.Object, httpClient);
+            var sut = new SLDJobManagementAPIService(httpClient, _loggerMock.Object);
 
             // Act
             var result = await sut.GetCollectionPeriods(2425);

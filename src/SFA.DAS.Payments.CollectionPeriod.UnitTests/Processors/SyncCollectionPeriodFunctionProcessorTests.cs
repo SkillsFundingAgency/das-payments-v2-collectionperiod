@@ -18,14 +18,14 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
         private Mock<ILogger<SyncCollectionPeriodsFunctionProcessor>> _mockLogger;
         private Mock<ISyncCollectionPeriodMapper> _mockMapper;
         private SyncCollectionPeriodsFunctionProcessor _sut;
-        private Mock<ISldJobManagementApiService> _mockSLDAPI;
+        private Mock<ISLDJobManagementAPIService> _mockSLDAPI;
 
         [SetUp]
         public void SetUp()
         {
             _repositoryMock = new Mock<ICollectionPeriodRepository>();
             _mockMapper = new Mock<ISyncCollectionPeriodMapper>();
-            _mockSLDAPI = new Mock<ISldJobManagementApiService>();
+            _mockSLDAPI = new Mock<ISLDJobManagementAPIService>();
             _mockLogger = new Mock<ILogger<SyncCollectionPeriodsFunctionProcessor>>();
 
             _sut = new SyncCollectionPeriodsFunctionProcessor(_mockSLDAPI.Object, _mockMapper.Object, _repositoryMock.Object, _mockLogger.Object);

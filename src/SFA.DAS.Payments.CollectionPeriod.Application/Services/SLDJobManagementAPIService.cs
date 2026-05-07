@@ -1,32 +1,30 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using System.Net.Http.Json;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
 {
-    public interface ISldJobManagementApiService
+    public interface ISLDJobManagementAPIService
     {
         Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear);
     }
 
-    public class SldJobManagementApiService : ISldJobManagementApiService
+    public class SLDJobManagementAPIService : ISLDJobManagementAPIService
     {
-        private readonly ILogger<SldJobManagementApiService> _logger;
         private readonly HttpClient _httpClient;
+        private readonly ILogger<SLDJobManagementAPIService> _logger;
 
-
-        public SldJobManagementApiService(ILogger<SldJobManagementApiService> logger, HttpClient httpClient)
+        public SLDJobManagementAPIService(HttpClient httpClient, ILogger<SLDJobManagementAPIService> logger)
         {
-            _logger = logger;
             _httpClient = httpClient;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<SLDJobContextCollectionPeriodModel>> GetCollectionPeriods(short fromCollectionYear)
         {           
             try
             {
-                var sldResponse = await _httpClient.GetAsync($"returnperiods/?fromCollectionYear={fromCollectionYear}");
+                var sldResponse = await _httpClient.GetAsync($"api/returnperiods/?fromCollectionYear={fromCollectionYear}");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
@@ -42,6 +40,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
                 _logger.LogError($"Error occurred while calling SLD Job Context API to get collection periods for fromCollectionYear: {fromCollectionYear}. Exception: {ex.Message}");
                 throw;
             }
+
         }
     }
 }
