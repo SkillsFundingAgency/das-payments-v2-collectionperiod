@@ -44,3 +44,6 @@ To run the Acceptance Tests locally, you will also need to add the following at 
   "CollectionPeriodAPIBaseUrl": "http://localhost:7069/api/"
 }
 ```
+
+### Azure Ad Settings confluence link
+https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/5171413015/Certificate+Installation+and+Azure+AD+Settings+for+Test+Environment+for+Collection+Period
