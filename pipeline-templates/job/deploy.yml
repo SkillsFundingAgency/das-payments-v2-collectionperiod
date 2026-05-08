@@ -35,8 +35,8 @@ jobs:
                 { "name": "AzureAd:ClientId", "value": "$(CollectionPeriod-SLDAPI-ClientId)" },
                 { "name": "AzureAd:TenantId", "value": "$(CollectionPeriod-SLDAPI-TenantId)" },
                 { "name": "AzureAd:Audience", "value": "$(CollectionPeriod-SLDAPI-Audience)" },
-                { "name": "AzureAd:ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" },
-                { "name": "FUNCTIONS_WORKER_RUNTIME", "value": "dotnet-isolated" }
+                { "name": "AzureAd:ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" }
+                
                
               ]
 
