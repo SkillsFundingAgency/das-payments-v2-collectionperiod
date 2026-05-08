@@ -32,10 +32,10 @@ jobs:
                 { "name": "PaymentsConnectionString", "value": "$(DasPaymentsConnectionStringRW)" },
                 { "name": "ServiceBusConnectionString", "value": "$(ServiceBusSAPServFabPrimaryConnectionStringDAS)" },
                 { "name": "SLDJobManagementAPIEndpoint", "value": "$(SLDJobManagementAPIEndpoint)" },
-                { "name": "AzureAd:ClientId", "value": "$(CollectionPeriod-SLDAPI-ClientId)" },
-                { "name": "AzureAd:TenantId", "value": "$(CollectionPeriod-SLDAPI-TenantId)" },
-                { "name": "AzureAd:Audience", "value": "$(CollectionPeriod-SLDAPI-Audience)" },
-                { "name": "AzureAd:ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" }
+                { "name": "AzureAd__ClientId", "value": "$(CollectionPeriod-SLDAPI-ClientId)" },
+                { "name": "AzureAd__TenantId", "value": "$(CollectionPeriod-SLDAPI-TenantId)" },
+                { "name": "AzureAd__Audience", "value": "$(CollectionPeriod-SLDAPI-Audience)" },
+                { "name": "AzureAd__ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" }
                 
                
               ]
