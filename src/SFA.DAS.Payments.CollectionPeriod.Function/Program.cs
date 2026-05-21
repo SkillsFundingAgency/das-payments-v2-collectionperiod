@@ -58,6 +58,24 @@ builder.Services.AddHttpClient<ISLDJobManagementAPIService, SLDJobManagementAPIS
 {
     options.Scopes = [$"{builder.Configuration["AzureAd:Audience"]}/.default"];
     options.RequestAppToken = true;
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (_, cert, _, _) =>
+    {
+        var thumbprint = Environment.GetEnvironmentVariable("Thumbprint");
+
+        if (string.IsNullOrEmpty(thumbprint))
+        {
+            throw new Exception("Thumbprint is missing");
+        }
+
+        if (cert == null)
+        {
+            throw new Exception("SLD certificate was not returned with message");
+        }
+        return cert.Thumbprint == thumbprint;
+    }
 }); 
 
 builder.Services.AddScoped<IPaymentsDataContext, PaymentsDataContext>();
