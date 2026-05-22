@@ -38,7 +38,7 @@ jobs:
                 { "name": "AzureAd__ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" },
                 { "name": "Thumbprint", "value": "$(CollectionPeriod-Thumbprint)" }
                
-              ]
+               ]
 
         - task: AzureFunctionApp@2
           displayName: 'Azure Function App Deploy'
