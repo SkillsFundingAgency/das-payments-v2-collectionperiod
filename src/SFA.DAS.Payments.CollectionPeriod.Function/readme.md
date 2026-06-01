@@ -14,7 +14,8 @@ Add the following at the root of the function app in a file labelled `local.sett
     "QueueName": "",
     "CollectionPeriodQueueName": "",
     "PaymentsTopicName": "",
-    "CollectionPeriodSubscriptionName": ""
+    "CollectionPeriodSubscriptionName": "",
+    "Thumbprint": ""
   },
   "ApplicationInsights": {
     "ConnectionString": ""
