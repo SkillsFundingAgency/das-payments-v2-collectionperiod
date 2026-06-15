@@ -137,6 +137,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("CollectionPeriod Function App - Start creating messaging infrastructure.");
+
             var serviceBusConnectionString = _configuration.GetConnectionString("ServiceBusConnectionString");
             var queueName = _configuration["CollectionPeriodQueueName"];
             var topicName = _configuration["PaymentsTopicName"];
@@ -158,6 +160,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("CollectionPeriod Function App - Finished creating messaging infrastructure.");
             return Task.CompletedTask;
         }
     }

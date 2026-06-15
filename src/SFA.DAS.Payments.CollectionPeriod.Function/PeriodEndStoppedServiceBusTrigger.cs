@@ -23,7 +23,7 @@ public class PeriodEndStoppedServiceBusTrigger
 
     [Function(nameof(PeriodEndStoppedServiceBusTrigger))]
     public async Task Run(
-        [ServiceBusTrigger("%CollectionPeriodQueueName%", Connection = "%ServiceBusConnectionString%")]
+        [ServiceBusTrigger("%CollectionPeriodQueueName%", Connection = "%ConnectionStrings__ServiceBusConnectionString%")]
         ServiceBusReceivedMessage message, ServiceBusMessageActions messageActions)
     {
         _logger.LogInformation("PeriodEndStoppedServiceBusTrigger function executed at: {executionTime}", DateTime.Now);
