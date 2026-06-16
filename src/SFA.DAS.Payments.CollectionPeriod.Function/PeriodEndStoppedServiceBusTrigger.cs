@@ -32,9 +32,9 @@ public class PeriodEndStoppedServiceBusTrigger
         _logger.LogInformation("Message Body: {body}", message.Body);
         _logger.LogInformation("Message Content-Type: {contentType}", message.ContentType);
 
-        var msg = JsonSerializer.Deserialize<PeriodEndStoppedEvent>(message.Body.ToString());
+        var periodEndStoppedEvent = message.Body.ToObjectFromJson<PeriodEndStoppedEvent>();
 
-        await _periodEndStoppedEventHandler.Handle(msg);
+        await _periodEndStoppedEventHandler.Handle(periodEndStoppedEvent);
 
         await messageActions.CompleteMessageAsync(message);
     }
