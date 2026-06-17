@@ -5,6 +5,8 @@ using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Azure.Identity;
+using Azure.Messaging.ServiceBus.Administration;
 
 namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
 {
@@ -19,12 +21,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
             _configuration = configuration;
         }
 
-        public async Task InitialiseCollectionPeriodQueue(string serviceBusConnectionString, string queueName)
+        public async Task InitialiseCollectionPeriodQueue(ServiceBusAdministrationClient adminClient, string queueName)
         {
             try
             {
-                var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
-
                 if (await adminClient.QueueExistsAsync(queueName, CancellationToken.None))
                 {
                     _logger.LogInformation($"Queue '{queueName}' already exists, skipping queue creation.");
@@ -61,11 +61,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
 
         }
 
-        public async Task InitialiseCollectionPeriodSubscription(string serviceBusConnectionString, string topicName, string subscriptionName, string queueName)
+        public async Task InitialiseCollectionPeriodSubscription(ServiceBusAdministrationClient adminClient, string topicName, string subscriptionName, string queueName)
         {
             try
             {
-                var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
                 if (await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None))
                 {
                     _logger.LogInformation($"Subscription '{subscriptionName}' on topic '{topicName}' already exists, skipping subscription creation.");
@@ -99,12 +98,10 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
             }
         }
 
-        public async Task CreatePeriodEndStoppedEventFilter(string topicName, string subscriptionName, string serviceBusConnectionString)
+        public async Task CreatePeriodEndStoppedEventFilter(ServiceBusAdministrationClient adminClient, string topicName, string subscriptionName)
         {
             try
             {
-                var adminClient = new ServiceBusAdministrationClient(serviceBusConnectionString);
-
                 if (!await adminClient.SubscriptionExistsAsync(topicName, subscriptionName, CancellationToken.None))
                 {
                     _logger.LogWarning($"Subscription '{subscriptionName}' on topic '{topicName}' does not exist. Cannot create filter.");
@@ -139,13 +136,14 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
         {
             _logger.LogInformation("CollectionPeriod Function App - Start creating messaging infrastructure.");
 
-            var serviceBusConnectionString = _configuration.GetConnectionString("ServiceBusConnectionString");
+            var administrationClient = new ServiceBusAdministrationClient(_configuration["ServiceBusNamespace"], new DefaultAzureCredential());
+
+            //var serviceBusConnectionString = _configuration.GetConnectionString("ServiceBusConnectionString");
             var queueName = _configuration["CollectionPeriodQueueName"];
             var topicName = _configuration["PaymentsTopicName"];
             var subscriptionName = _configuration["CollectionPeriodSubscriptionName"];
 
-            if (string.IsNullOrEmpty(serviceBusConnectionString) ||
-                string.IsNullOrEmpty(queueName) ||
+            if (string.IsNullOrEmpty(queueName) ||
                 string.IsNullOrEmpty(topicName) ||
                 string.IsNullOrEmpty(subscriptionName))
             {
@@ -153,9 +151,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
                 return;
             }
 
-            await InitialiseCollectionPeriodQueue(serviceBusConnectionString, queueName);
-            await InitialiseCollectionPeriodSubscription(serviceBusConnectionString, topicName, subscriptionName, queueName);
-            await CreatePeriodEndStoppedEventFilter(topicName, subscriptionName, serviceBusConnectionString);
+            await InitialiseCollectionPeriodQueue(administrationClient, queueName);
+            await InitialiseCollectionPeriodSubscription(administrationClient, topicName, subscriptionName, queueName);
+            await CreatePeriodEndStoppedEventFilter(administrationClient, topicName, subscriptionName);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
