@@ -136,20 +136,21 @@ namespace SFA.DAS.Payments.CollectionPeriod.Infrastructure.Messaging
         {
             _logger.LogInformation("CollectionPeriod Function App - Start creating messaging infrastructure.");
 
-            var administrationClient = new ServiceBusAdministrationClient(_configuration["ServiceBusNamespace"], new DefaultAzureCredential());
-
-            //var serviceBusConnectionString = _configuration.GetConnectionString("ServiceBusConnectionString");
+            var serviceBusNamespace = _configuration["ServiceBusNamespace"];
             var queueName = _configuration["CollectionPeriodQueueName"];
             var topicName = _configuration["PaymentsTopicName"];
             var subscriptionName = _configuration["CollectionPeriodSubscriptionName"];
 
-            if (string.IsNullOrEmpty(queueName) ||
+            if (string.IsNullOrEmpty(serviceBusNamespace) || 
+                string.IsNullOrEmpty(queueName) ||
                 string.IsNullOrEmpty(topicName) ||
                 string.IsNullOrEmpty(subscriptionName))
             {
                 _logger.LogWarning("One or more required configuration values are missing. Skipping messaging infrastructure setup.");
                 return;
             }
+
+            var administrationClient = new ServiceBusAdministrationClient(serviceBusNamespace, new DefaultAzureCredential());
 
             await InitialiseCollectionPeriodQueue(administrationClient, queueName);
             await InitialiseCollectionPeriodSubscription(administrationClient, topicName, subscriptionName, queueName);
