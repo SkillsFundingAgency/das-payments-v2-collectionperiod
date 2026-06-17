@@ -38,10 +38,10 @@ jobs:
                 { "name": "AzureAd__ClientSecret", "value": "$(CollectionPeriod-SLDAPI-ClientSecret)" },
                 { "name": "Thumbprint", "value": "$(CollectionPeriod-Thumbprint)" },
                 { "name": "AzureAd__Instance", "value": "https://login.microsoftonline.com/" },
-                { "name": "CollectionPeriodQueueName", "value": "sfa-${{ parameters.environmentName }}-payments-collectionperiod" },
-                { "name": "CollectionPeriodSubscriptionName", "value": "sfa-${{ parameters.environmentName }}-payments-collectionperiod" },
-                { "name": "PaymentsTopicName", "value": "bundle-1" },
-                { "name": "ServiceBusNamespace", "value": "DCOL-DST-ServiceBusDAS-Premium-WEU.servicebus.windows.net" }
+                { "name": "CollectionPeriodQueueName", "value": "sfa-das-payments-collectionperiod" },
+                { "name": "CollectionPeriodSubscriptionName", "value": "sfa-das-payments-collectionperiod" },
+                { "name": "PaymentsTopicName", "value": "bundle-1" }
+                
                
                ]
 
