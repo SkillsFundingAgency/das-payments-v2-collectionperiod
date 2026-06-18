@@ -75,10 +75,13 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                     var existingCollectionPeriod = _paymentsDataContext.CollectionPeriod
                         .FirstOrDefault(cp => cp.AcademicYear == collectionPeriod.AcademicYear && cp.Period == collectionPeriod.Period);
 
-                    if (existingCollectionPeriod != null && existingCollectionPeriod.Status != collectionPeriod.Status)
+                    if (existingCollectionPeriod != null)
                     {
-                        existingCollectionPeriod.Status = collectionPeriod.Status;
-                        _paymentsDataContext.CollectionPeriod.Update(existingCollectionPeriod);
+                        if (existingCollectionPeriod.Status != collectionPeriod.Status)
+                        {
+                            existingCollectionPeriod.Status = collectionPeriod.Status;
+                            _paymentsDataContext.CollectionPeriod.Update(existingCollectionPeriod);
+                        }
                     }
                     else
                     {

@@ -220,6 +220,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
 
             var updatedCollectionPeriod = result.First(cp => cp.AcademicYear == academicYear && cp.Period == collectionPeriod);
 
+            Assert.That(result.Count, Is.EqualTo(2));
+
             Assert.That(updatedCollectionPeriod.Status, Is.EqualTo(CollectionPeriodStatus.Completed));
             Assert.That(updatedCollectionPeriod.ReferenceDataValidationDate, Is.EqualTo(referenceDataValidationDate));
             Assert.That(updatedCollectionPeriod.CompletionDate, Is.EqualTo(completionDate));
