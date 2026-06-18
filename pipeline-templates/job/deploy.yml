@@ -4,6 +4,7 @@ parameters:
   location: 'West Europe'
   environmentName:
   appName:
+  ServiceBusNamespace:
 
 jobs:
 - deployment: DeployAzureFunctionApp
@@ -40,7 +41,8 @@ jobs:
                 { "name": "AzureAd__Instance", "value": "https://login.microsoftonline.com/" },
                 { "name": "CollectionPeriodQueueName", "value": "sfa-das-payments-collectionperiod" },
                 { "name": "CollectionPeriodSubscriptionName", "value": "sfa-das-payments-collectionperiod" },
-                { "name": "PaymentsTopicName", "value": "bundle-1" }
+                { "name": "PaymentsTopicName", "value": "bundle-1" },
+                { "name": "ServiceBusNamespace", "value": ${{ parameters.ServiceBusNamespace }} }
                 
                
                ]
