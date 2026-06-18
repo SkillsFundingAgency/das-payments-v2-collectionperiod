@@ -42,7 +42,7 @@ jobs:
                 { "name": "CollectionPeriodQueueName", "value": "sfa-das-payments-collectionperiod" },
                 { "name": "CollectionPeriodSubscriptionName", "value": "sfa-das-payments-collectionperiod" },
                 { "name": "PaymentsTopicName", "value": "bundle-1" },
-                { "name": "ServiceBusNamespace", "value": ${{ parameters.ServiceBusNamespace }} }
+                { "name": "ServiceBusNamespace", "value": "${{ parameters.ServiceBusNamespace }}" }
                 
                
                ]
