@@ -47,8 +47,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
             {
                 AcademicYear = period.AcademicYear,
-                CalendarMonth = (byte)DateTime.Today.Month,
-                CalendarYear = (byte)DateTime.Today.Year,
                 CompletionDate = DateTime.Today,
                 EndDateTime = null,
                 Period = period.Period,
@@ -67,8 +65,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
             {
                 AcademicYear = period.AcademicYear,
-                CalendarMonth = (byte)DateTime.Today.Month,
-                CalendarYear = (byte)DateTime.Today.Year,
                 CompletionDate = DateTime.Today,
                 EndDateTime = DateTime.Today,
                 Period = period.Period,
@@ -88,8 +84,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
             {
                 AcademicYear = period.AcademicYear,
-                CalendarMonth = (byte)periodMonth.Month,
-                CalendarYear = (byte)periodMonth.Year,
                 CompletionDate = periodMonth,
                 EndDateTime = null,
                 Period = period.Period,
@@ -109,8 +103,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
             {
                 AcademicYear = period.AcademicYear,
-                CalendarMonth = 8,
-                CalendarYear = (byte)periodMonth.Year,
                 CompletionDate = periodMonth.AddMonths(1),
                 EndDateTime = null,
                 Period = 1,
@@ -131,8 +123,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
             testSession.DataContext.CollectionPeriods.Add(new CollectionPeriodModel
             {
                 AcademicYear = (short)(period.AcademicYear - 101),
-                CalendarMonth = 8,
-                CalendarYear = (byte)periodMonth.Year,
                 CompletionDate = periodMonth.AddMonths(1),
                 EndDateTime = null,
                 Period = 13,
