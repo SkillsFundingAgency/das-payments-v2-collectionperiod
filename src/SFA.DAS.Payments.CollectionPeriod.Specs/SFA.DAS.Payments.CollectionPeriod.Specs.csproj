@@ -7,6 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Infrastructure\**" />
+	  <EmbeddedResource Remove="Infrastructure\**" />
+	  <None Remove="Infrastructure\**" />
+	  <ReqnrollFeatureFile Remove="Infrastructure\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Bogus" Version="35.6.5" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.2" />
@@ -15,14 +22,13 @@
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
 		<PackageReference Include="Reqnroll.NUnit" Version="3.3.4" />
 
-		<PackageReference Include="SFA.DAS.Payments.Application" Version="2.4.1-prerelease-55" />
-		<PackageReference Include="SFA.DAS.Payments.Core" Version="2.4.1-prerelease-55" />
-		<PackageReference Include="SFA.DAS.Payments.Model.Core" Version="2.4.1-prerelease-55" />
+		<PackageReference Include="SFA.DAS.Payments.Application" Version="2.6.0-prerelease-9" />
+		<PackageReference Include="SFA.DAS.Payments.Core" Version="2.6.0-prerelease-9" />
+		<PackageReference Include="SFA.DAS.Payments.Model.Core" Version="2.6.0-prerelease-9" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Features\" />
-	  <Folder Include="Infrastructure\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -35,5 +41,13 @@
 	  <None Update="appSettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ReqnrollObsoleteCodeBehindFiles Remove="Infrastructure\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ReqnrollLegacyCodeBehindFiles Remove="Infrastructure\**" />
 	</ItemGroup>
 </Project>
