@@ -1,4 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using System;
+using System.Net;
+using System.Net.Http.Json;
+using NUnit.Framework;
 using Reqnroll;
 using SFA.DAS.Payments.Model.Core;
 using SFA.DAS.Payments.Model.Core.Entities;
@@ -149,8 +152,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         [When("a request is made to get the open collection years from the Collection Periods API")]
         public async Task WhenARequestIsMadeToGetTheOpenCollectionYearsFromTheCollectionPeriodsAPI()
         {
+            var response = await testSession.HttpClient.GetAsync("collectionYear");
 
-            OpenYears = await testSession.HttpClient.GetFromJsonAsync<List<CollectionYear>>("collectionYear");
+            OpenYears = response.StatusCode == HttpStatusCode.NoContent
+                ? null
+                : await response.Content.ReadFromJsonAsync<List<CollectionYear>>();
         }
 
         public class CollectionYear
@@ -162,13 +168,24 @@ namespace SFA.DAS.Payments.CollectionPeriod.Specs.StepDefinitions
         [Then("the response should contain the current collection year")]
         public void ThenTheResponseShouldContainTheCurrentCollectionYear()
         {
-            OpenYears.Any(openYear => openYear.Year.Equals(currentAcademicYear));
+            Assert.That(OpenYears, Is.Not.Null);
+            Assert.That(OpenYears, Has.Count.EqualTo(1));
+            Assert.That(OpenYears.Any(x => x.Year == currentAcademicYear), Is.True);
         }
 
         [Then("the response should contain the both open collection years")]
         public void ThenTheResponseShouldContainTheBothOpenCollectionYears()
         {
-            OpenYears.All(openYear => openYear.Year.Equals(currentAcademicYear) || openYear.Year.Equals(currentAcademicYear - 101));
+            Assert.That(OpenYears, Is.Not.Null);
+            Assert.That(OpenYears, Has.Count.EqualTo(2));
+            Assert.That(OpenYears.Any(x => x.Year == currentAcademicYear), Is.True);
+            Assert.That(OpenYears.Any(x => x.Year == currentAcademicYear - 101), Is.True);
+        }
+
+        [When("the response should not contain the current collection year")]
+        public void WhenTheResponseShouldNotContainTheCurrentCollectionYear()
+        {
+            Assert.That(OpenYears, Is.Null);
         }
 
     }

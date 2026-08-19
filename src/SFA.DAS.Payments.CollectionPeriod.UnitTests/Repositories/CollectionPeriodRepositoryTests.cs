@@ -32,10 +32,12 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
         public async Task OpenCollectionYears_ReturnsDistinctOpenYears()
         {
             var mockData = new[]{
+                 new CollectionPeriodModel { AcademicYear = 2526, Period = 1, Status = CollectionPeriodStatus.NotStarted},
                  new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Open },
                  new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Open },
                  new CollectionPeriodModel { AcademicYear = 2324, Period = 1, Status = CollectionPeriodStatus.Open },
                  new CollectionPeriodModel { AcademicYear = 2223, Period = 1, Status = CollectionPeriodStatus.Closed },
+                 new CollectionPeriodModel { AcademicYear = 2121, Period = 1, Status = CollectionPeriodStatus.Completed } 
             };
 
             _mockContext.CollectionPeriod.AddRange(mockData);
@@ -44,8 +46,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
             var result = await sut.OpenCollectionYears();
 
             Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.Contains((short)2526), Is.False);
             Assert.That(result.Contains((short)2425), Is.True);
             Assert.That(result.Contains((short)2324), Is.True);
+            Assert.That(result.Contains((short)2223), Is.False);
+            Assert.That(result.Contains((short)2122), Is.False);
         }
 
         [Test]
