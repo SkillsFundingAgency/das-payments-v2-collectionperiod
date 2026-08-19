@@ -26,6 +26,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="appSettings.development.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="appSettings.Debug.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
