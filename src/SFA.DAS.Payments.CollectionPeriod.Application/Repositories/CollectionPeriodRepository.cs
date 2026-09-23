@@ -78,6 +78,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
                     if (existingCollectionPeriod != null)
                     {
                         existingCollectionPeriod.Status = collectionPeriod.Status;
+                        existingCollectionPeriod.StartDateTime = collectionPeriod.StartDateTime;
+                        existingCollectionPeriod.EndDateTime = collectionPeriod.EndDateTime;
                         _paymentsDataContext.CollectionPeriod.Update(existingCollectionPeriod);
                     }
                     else
@@ -112,12 +114,16 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
 
         // Retrieve the current collection year based on the current date and open collection periods
         // If there are multiple open collection periods, it will return the oldest collection year
+        // Also includes any year with a period still marked Open/NotStarted, even if its EndDateTime has
+        // passed, so a stale status is picked up and corrected on the next sync from SLD
         public async Task<short> GetCurrentCollectionYear()
         {
             try
             {
                 return await _paymentsDataContext.CollectionPeriod
-                    .Where(cp => cp.EndDateTime > DateTime.Today)
+                    .Where(cp => cp.EndDateTime > DateTime.Today
+                        || cp.Status == CollectionPeriodStatus.Open
+                        || cp.Status == CollectionPeriodStatus.NotStarted)
                     .Select(cp => cp.AcademicYear)
                     .OrderBy(cp => cp)
                     .FirstOrDefaultAsync();
