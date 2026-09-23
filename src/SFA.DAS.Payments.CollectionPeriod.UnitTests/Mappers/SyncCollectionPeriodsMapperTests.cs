@@ -34,6 +34,8 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
             Assert.AreEqual(dto.PeriodNumber, result.First().Period);
             Assert.AreEqual(dto.CollectionYear, result.First().AcademicYear);
             Assert.AreEqual(CollectionPeriodStatus.Closed, result.First().Status);
+            Assert.AreEqual(dto.StartDateTimeUtc, result.First().StartDateTime);
+            Assert.AreEqual(dto.EndDateTimeUtc, result.First().EndDateTime);
         }
 
         [Test]
