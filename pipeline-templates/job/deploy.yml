@@ -43,8 +43,8 @@ jobs:
                 { "name": "CollectionPeriodSubscriptionName", "value": "sfa-das-payments-collectionperiod" },
                 { "name": "PaymentsTopicName", "value": "bundle-1" },
                 { "name": "ServiceBusNamespace", "value": "${{ parameters.ServiceBusNamespace }}" },
-                { "name": "SyncCollectionPeriodsSchedule", "value": "*/5 * * * *" },
-                { "name": "FUNCTIONS_WORKER_RUNTIME", "value": "dotnet-isolated" }
+                { "name": "SyncCollectionPeriodsSchedule", "value": "*/5 * * * *" }
+                
                
                ]
 
