@@ -6,7 +6,13 @@
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Maping\**" />
+	  <EmbeddedResource Remove="Maping\**" />
+	  <None Remove="Maping\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Azure.Identity" Version="1.21.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="NUnit" Version="3.14.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
@@ -14,14 +20,12 @@
 		<PackageReference Include="coverlet.collector" Version="6.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.32" />
 		<PackageReference Include="FluentAssertions" Version="5.6.0" />
+		<PackageReference Include="SFA.DAS.Payments.Application" Version="2.6.0-prerelease-9" />
 
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="../SFA.DAS.Payments.CollectionPeriod.Application/SFA.DAS.Payments.CollectionPeriod.Application.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Maping\" />
-	  <Folder Include="Services\" />
+		<ProjectReference Include="..\SFA.DAS.Payments.CollectionPeriod.Infrastructure\SFA.DAS.Payments.CollectionPeriod.Infrastructure.csproj" />
 	</ItemGroup>
 </Project>
 		

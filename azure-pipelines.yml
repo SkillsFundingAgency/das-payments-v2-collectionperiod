@@ -44,6 +44,7 @@ stages:
       environmentName: DST
       azureSubscription: DCT-VSO
       appName: DCOL-DST-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-DST-ServiceBusDAS-Premium-WEU.servicebus.windows.net
 
 - stage: Deploy_DAS
   dependsOn: Deploy_DST
@@ -59,6 +60,7 @@ stages:
       environmentName: DAS
       azureSubscription: DCT-VSO
       appName: DCOL-DAS-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-DAS-ServiceBusDAS-Standard-WEU.servicebus.windows.net
 
 - stage: Deploy_SIT
   dependsOn: Deploy_DAS
@@ -74,6 +76,7 @@ stages:
       environmentName: SIT
       azureSubscription: DCT-VSO
       appName: DCOL-SIT-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-SIT-ServiceBusDAS-WEU.servicebus.windows.net
 
 - stage: Deploy_ETE
   dependsOn: Deploy_SIT
@@ -89,6 +92,7 @@ stages:
       environmentName: ETE
       azureSubscription: DCT-VSO
       appName: DCOL-ETE-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-ETE-ServiceBusDAS-WEU.servicebus.windows.net
 
 - stage: Deploy_MO
   dependsOn: Deploy_ETE
@@ -104,6 +108,7 @@ stages:
       environmentName: MO
       azureSubscription: DCOL-MO-VSTS
       appName: DCOL-MO-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-MO1-ServiceBusDAS-WEU.servicebus.windows.net
 
 - stage: Deploy_PP
   dependsOn: Deploy_MO
@@ -119,9 +124,10 @@ stages:
       environmentName: PP
       azureSubscription: DCOLPPVSTS
       appName: DCOL-PP-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-PP-ServiceBusDAS-WEU.servicebus.windows.net
 
 - stage: Deploy_PD
-  dependsOn: Deploy_MO
+  dependsOn: Deploy_PP
   displayName: Deploy to PD
   variables:
   - name: tagEnvironment
@@ -134,3 +140,4 @@ stages:
       environmentName: PD
       azureSubscription: DCOLPDVSTS
       appName: DCOL-PD-CollectionPeriod-WEU
+      ServiceBusNamespace: DCOL-PD-ServiceBusDAS-WEU.servicebus.windows.net

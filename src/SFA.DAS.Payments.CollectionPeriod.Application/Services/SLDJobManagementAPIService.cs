@@ -1,5 +1,4 @@
-﻿using ESFA.DC.Logging.Interfaces;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using SFA.DAS.Payments.CollectionPeriod.Application.Models;
 using System.Net.Http.Json;
 
@@ -25,10 +24,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
         {           
             try
             {
-                var sldResponse = await _httpClient.GetAsync($"/api/returnperiods/?fromCollectionYear={fromCollectionYear}/");
+                var sldResponse = await _httpClient.GetAsync($"api/returnperiods/ilr?fromCollectionYear={fromCollectionYear}");
 
                 if (sldResponse.IsSuccessStatusCode)
                 {
+                    _logger.LogInformation($"API call was successful. Retrieved collection periods for from CollectionYear: {fromCollectionYear}");
                     var result = await sldResponse.Content.ReadFromJsonAsync<IEnumerable<SLDJobContextCollectionPeriodModel>>();
                     return result ?? Enumerable.Empty<SLDJobContextCollectionPeriodModel>();
                 }
@@ -40,7 +40,7 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Services
                 _logger.LogError($"Error occurred while calling SLD Job Context API to get collection periods for fromCollectionYear: {fromCollectionYear}. Exception: {ex.Message}");
                 throw;
             }
-            
+
         }
     }
 }

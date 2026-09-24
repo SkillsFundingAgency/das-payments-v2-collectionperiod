@@ -10,8 +10,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Models
     {
         public long Id { get; set; }
         public short Period { get; set; }
-        public byte? CalendarMonth { get; set; }
-        public short? CalendarYear { get; set; }
         public string? Status { get; set; }
     }
 }

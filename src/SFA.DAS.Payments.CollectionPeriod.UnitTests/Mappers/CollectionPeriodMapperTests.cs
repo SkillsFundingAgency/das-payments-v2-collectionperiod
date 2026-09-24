@@ -28,8 +28,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
                 ReferenceDataValidationDate = new DateTime(2024, 1, 15),
                 CompletionDate = new DateTime(2024, 2, 28),
                 Status = CollectionPeriodStatus.Open,
-                CalendarMonth = 2,
-                CalendarYear = 2023
             };
 
             var result = _sut.MapToCollectionPeriodResponseModel(source);
@@ -37,8 +35,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
             result.Should().NotBeNull();
             result.Id.Should().Be(source.Id);
             result.Period.Should().Be(source.Period);
-            result.CalendarYear.Should().Be(source.CalendarYear);
-            result.CalendarMonth.Should().Be(source.CalendarMonth);
             result.Status.Should().Be(source.Status.Value.ToString());
         }
 
@@ -53,8 +49,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
                     Period = 1,
                     AcademicYear = 2324,
                     Status = CollectionPeriodStatus.Completed,
-                    CalendarMonth = 1,
-                    CalendarYear = 2024
                 },
                 new CollectionPeriodModel
                 {
@@ -62,8 +56,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
                     Period = 2,
                     AcademicYear = 2324,
                     Status = CollectionPeriodStatus.Closed,
-                    CalendarMonth = 2,
-                    CalendarYear = 2024
                 },
                 new CollectionPeriodModel
                 {
@@ -71,8 +63,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
                     Period = 3,
                     AcademicYear = 2324,
                     Status = CollectionPeriodStatus.Open,
-                    CalendarMonth = 3,
-                    CalendarYear = 2024
                  }
             };
 
@@ -82,8 +72,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Mappers
             results.Periods.Select(r => r.Period).Should().BeEquivalentTo(new[] { 1, 2, 3 });
             results.Periods.Select(r => r.Id).Should().BeEquivalentTo(new[] { 1, 2, 3 });
             results.Periods.Select(r => r.Status).Should().BeEquivalentTo(new[] { "Completed", "Closed", "Open" });
-            results.Periods.Select(r => r.CalendarYear).Should().BeEquivalentTo(new[] { 2024, 2024, 2024 });
-            results.Periods.Select(r => r.CalendarMonth).Should().BeEquivalentTo(new[] { 1, 2, 3 });
         }
 
         [Test]
