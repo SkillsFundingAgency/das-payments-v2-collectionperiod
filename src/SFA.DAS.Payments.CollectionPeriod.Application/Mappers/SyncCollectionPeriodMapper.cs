@@ -17,7 +17,9 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
             {
                 AcademicYear = cp.CollectionYear,
                 Period = cp.PeriodNumber,
-                Status = MapCollectionPeriodStaus(cp)
+                Status = MapCollectionPeriodStaus(cp),
+                StartDateTime = cp.StartDateTimeUtc,
+                EndDateTime = cp.EndDateTimeUtc
             });
         }
 

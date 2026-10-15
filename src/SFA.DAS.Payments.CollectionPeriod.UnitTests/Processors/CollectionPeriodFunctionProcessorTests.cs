@@ -89,24 +89,18 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                     Id = 1, Period = 1, 
                     AcademicYear = 2324, 
                     Status = CollectionPeriodStatus.Open, 
-                    CalendarMonth = 8, 
-                    CalendarYear = 2023 
                 },
                 new CollectionPeriodModel { 
                     Id = 2, 
                     Period = 2, 
                     AcademicYear = 2425, 
                     Status = CollectionPeriodStatus.Open, 
-                    CalendarMonth = 9, 
-                    CalendarYear = 2025 
                 },
                 new CollectionPeriodModel { 
                     Id = 3, 
                     Period = 3, 
                     AcademicYear = 2324, 
-                    Status = CollectionPeriodStatus.Closed, 
-                    CalendarMonth = 9, 
-                    CalendarYear = 2023 
+                    Status = CollectionPeriodStatus.Closed,
                 }
             };
 
@@ -119,15 +113,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                     new CollectionPeriodResponseModel { 
                         Id = 1, 
                         Period = 1, 
-                        CalendarMonth = 8, 
-                        CalendarYear = 2023, 
                         Status = "Open" 
                     },
                     new CollectionPeriodResponseModel { 
                         Id = 2, 
                         Period = 2, 
-                        CalendarMonth = 9, 
-                        CalendarYear = 2025, 
                         Status = "Open" 
                     }
                 }
@@ -209,17 +199,13 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Processors
                 Id = 1,
                 Period = 5,
                 AcademicYear = 2324,
-                Status = CollectionPeriodStatus.Open,
-                CalendarMonth = 12,
-                CalendarYear = 2023
+                Status = CollectionPeriodStatus.Open
             };
 
             var expectedResponse = new CollectionPeriodResponseModel
             {
                 Id = 1,
                 Period = 5,
-                CalendarMonth = 12,
-                CalendarYear = 2023,
                 Status = "Open"
             };
 
