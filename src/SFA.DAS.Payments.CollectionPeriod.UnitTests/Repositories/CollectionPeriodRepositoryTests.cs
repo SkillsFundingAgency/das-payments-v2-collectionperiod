@@ -255,6 +255,54 @@ namespace SFA.DAS.Payments.CollectionPeriod.UnitTests.Repositories
         }
 
         [Test]
+        public async Task UpdateCollectionPeriods_Does_Not_Change_Status_Of_Completed_Periods()
+        {
+            var start = DateTime.Today.AddMonths(-2);
+            var end = DateTime.Today.AddMonths(-1);
+
+            _mockContext.CollectionPeriod.Add(new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Completed, StartDateTime = start, EndDateTime = end });
+            await _mockContext.SaveChangesAsync();
+
+            var updatedPeriods = new[]
+            {
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Closed, StartDateTime = start.AddDays(1), EndDateTime = end.AddDays(1) },
+            };
+
+            await sut.UpdateCollectionPeriods(updatedPeriods);
+
+            var result = _mockContext.CollectionPeriod.Single(cp => cp.AcademicYear == 2425 && cp.Period == 1);
+
+            Assert.That(result.Status, Is.EqualTo(CollectionPeriodStatus.Completed));
+            Assert.That(result.StartDateTime, Is.EqualTo(start));
+            Assert.That(result.EndDateTime, Is.EqualTo(end));
+        }
+
+        [Test]
+        public async Task UpdateCollectionPeriods_Still_Updates_Other_Periods_When_A_Completed_Period_Is_Skipped()
+        {
+            _mockContext.CollectionPeriod.AddRange(
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Completed },
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.NotStarted });
+            await _mockContext.SaveChangesAsync();
+
+            var updatedPeriods = new[]
+            {
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 1, Status = CollectionPeriodStatus.Closed },
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 2, Status = CollectionPeriodStatus.Open },
+                new CollectionPeriodModel { AcademicYear = 2425, Period = 3, Status = CollectionPeriodStatus.NotStarted },
+            };
+
+            await sut.UpdateCollectionPeriods(updatedPeriods);
+
+            var result = _mockContext.CollectionPeriod.ToList();
+
+            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.First(cp => cp.Period == 1).Status, Is.EqualTo(CollectionPeriodStatus.Completed));
+            Assert.That(result.First(cp => cp.Period == 2).Status, Is.EqualTo(CollectionPeriodStatus.Open));
+            Assert.That(result.First(cp => cp.Period == 3).Status, Is.EqualTo(CollectionPeriodStatus.NotStarted));
+        }
+
+        [Test]
         public async Task UpdateCollectionPeriods_AddNewPeriods()
         {
             var mockData = new[]
