@@ -77,6 +77,11 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Repositories
 
                     if (existingCollectionPeriod != null)
                     {
+                        if (existingCollectionPeriod.Status == CollectionPeriodStatus.Completed)
+                        {
+                            continue;
+                        }
+
                         if (existingCollectionPeriod.Status != collectionPeriod.Status
                             || existingCollectionPeriod.StartDateTime != collectionPeriod.StartDateTime
                             || existingCollectionPeriod.EndDateTime != collectionPeriod.EndDateTime)
