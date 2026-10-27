@@ -15,8 +15,8 @@ Scenario: Multiple Open Collection Years
 	When a request is made to get the open collection years from the Collection Periods API
 	Then the response should contain the both open collection years
 
-Scenario: In-between Collection Periods
+Scenario: No Open Collection Periods In The Current Collection Year
 	Given that the collection period has recently completed
 	But the next collection period has not yet been opened
 	When a request is made to get the open collection years from the Collection Periods API
-	Then the response should contain the current collection year
+	And the response should not contain the current collection year
