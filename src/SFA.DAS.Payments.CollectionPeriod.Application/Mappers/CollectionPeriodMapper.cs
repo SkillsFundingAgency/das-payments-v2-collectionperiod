@@ -22,8 +22,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
             {
                 Id = period.Id,
                 Period = period.Period,
-                CalendarMonth = period.CalendarMonth,
-                CalendarYear = period.CalendarYear,
                 Status = period.Status.HasValue ? period.Status.Value.ToString() : ""
             });
 
@@ -52,8 +50,6 @@ namespace SFA.DAS.Payments.CollectionPeriod.Application.Mappers
             {
                 Id = collectionPeriod.Id,
                 Period = collectionPeriod.Period,
-                CalendarMonth = collectionPeriod.CalendarMonth,
-                CalendarYear = collectionPeriod.CalendarYear,
                 Status = collectionPeriod.Status.HasValue ? collectionPeriod.Status.Value.ToString() : ""
             };
         }
